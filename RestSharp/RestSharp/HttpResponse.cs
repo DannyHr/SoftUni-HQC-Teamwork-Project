@@ -26,7 +26,7 @@ namespace RestSharp
     /// </summary>
     public class HttpResponse : IHttpResponse
     {
-        private string _content;
+        private string content;
 
         /// <summary>
         /// Default constructor
@@ -57,7 +57,7 @@ namespace RestSharp
         /// </summary>
         public string Content
         {
-            get { return _content ?? (_content = RawBytes.AsString()); }
+            get { return this.content ?? (this.content = RawBytes.AsString()); }
         }
         /// <summary>
         /// HTTP response status code

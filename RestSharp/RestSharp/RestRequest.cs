@@ -128,19 +128,19 @@ namespace RestSharp
             long fileLength = f.Length;
 
             return AddFile(new FileParameter
-                           {
-                               Name = name,
-                               FileName = Path.GetFileName(path),
-                               ContentLength = fileLength,
-                               Writer = s =>
-                                        {
-                                            using (var file = new StreamReader(path))
-                                            {
-                                                file.BaseStream.CopyTo(s);
-                                            }
-                                        },
-                                ContentType = contentType
-                           });
+                {
+                    Name = name,
+                    FileName = Path.GetFileName(path),
+                    ContentLength = fileLength,
+                    Writer = s =>
+                        {
+                            using (var file = new StreamReader(path))
+                            {
+                                file.BaseStream.CopyTo(s);
+                            }
+                        },
+                     ContentType = contentType
+                });
         }
 
         /// <summary>

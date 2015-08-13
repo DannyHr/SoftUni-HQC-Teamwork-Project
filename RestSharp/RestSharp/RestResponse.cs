@@ -31,7 +31,7 @@ namespace RestSharp
         /// <summary>
         /// Default constructor
         /// </summary>
-        public RestResponseBase()
+        protected RestResponseBase()
         {
             Headers = new List<Parameter>();
             Cookies = new List<RestResponseCookie>();

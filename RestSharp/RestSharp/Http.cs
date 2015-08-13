@@ -152,7 +152,18 @@ namespace RestSharp
 #endif
         private Encoding encoding = Encoding.UTF8;
 
-        public Encoding Encoding { get { return this.encoding; } set { this.encoding = value; } }
+        public Encoding Encoding
+        {
+            get
+            {
+                return this.encoding;
+            }
+
+            set
+            {
+                this.encoding = value;
+            }
+        }
 
         /// <summary>
         /// HTTP headers to be sent with request

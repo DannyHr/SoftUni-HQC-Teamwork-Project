@@ -41,7 +41,7 @@ namespace RestSharp
     /// <summary>
     /// HTTP method to use when making requests
     /// </summary>
-    public enum Method
+    public enum Method 
     {
         GET,
         POST,
@@ -51,6 +51,20 @@ namespace RestSharp
         OPTIONS,
         PATCH,
         MERGE,
+
+        // enum values must be all caps because are html commands
+    }
+
+    /// <summary>
+    /// Status for responses (surprised?)
+    /// </summary>
+    public enum ResponseStatus
+    {
+        None,
+        Completed,
+        Error,
+        TimedOut,
+        Aborted
     }
 
     /// <summary>
@@ -68,16 +82,6 @@ namespace RestSharp
         /// </summary>
         public const string RoundTrip = "u";
     }
-
-    /// <summary>
-    /// Status for responses (surprised?)
-    /// </summary>
-    public enum ResponseStatus
-    {
-        None,
-        Completed,
-        Error,
-        TimedOut,
-        Aborted
-    }
 }
+
+// struct DateFormat moved at the bottom after enums

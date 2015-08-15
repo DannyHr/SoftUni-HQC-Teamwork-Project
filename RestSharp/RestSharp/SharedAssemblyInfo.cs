@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using RestSharp;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -12,6 +13,7 @@ using System.Reflection;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -34,12 +36,15 @@ using System.Reflection;
 #endif
 #endif
 
-class SharedAssemblyInfo
+namespace RestSharp
 {
+    internal class SharedAssemblyInfo
+    {
 #if SIGNED
     public const string Version = "100.0.0";
     public const string FileVersion = "105.1.0";
 #else
-    public const string Version = "105.1.0";
+        public const string Version = "105.1.0";
 #endif
+    }
 }

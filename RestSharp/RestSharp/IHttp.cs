@@ -14,19 +14,19 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-
-#if FRAMEWORK
-using System.Net.Cache;
-#endif
-
 namespace RestSharp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+
+#if FRAMEWORK
+    using System.Net.Cache;
+#endif
+
     public interface IHttp
     {
         Action<Stream> ResponseWriter { get; set; }

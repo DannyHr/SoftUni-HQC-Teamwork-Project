@@ -22,21 +22,29 @@ namespace RestSharp
     using RestSharp.Extensions;
 
     /// <summary>
-    /// HTTP response data
+    /// Base class for common properties shared by RestResponse and RestResponse[[T]]
     /// </summary>
-    public class HttpResponse : IHttpResponse
+    public abstract class RestResponseBase
     {
-        private ResponseStatus responseStatus = ResponseStatus.None;
         private string content;
+        private ResponseStatus responseStatus = ResponseStatus.None;
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public HttpResponse()
+        protected RestResponseBase()
         {
-            this.Headers = new List<HttpHeader>();
-            this.Cookies = new List<HttpCookie>();
+            this.Headers = new List<Parameter>();
+            this.Cookies = new List<RestResponseCookie>();
         }
+
+        /// <summary>
+        /// The RestRequest that was made to get this RestResponse
+        /// </summary>
+        /// <remarks>
+        /// Mainly for debugging if ResponseStatus is not OK
+        /// </remarks> 
+        public IRestRequest Request { get; set; }
 
         /// <summary>
         /// MIME content type of response
@@ -54,15 +62,26 @@ namespace RestSharp
         public string ContentEncoding { get; set; }
 
         /// <summary>
-        /// Lazy-loaded string representation of response content
+        /// String representation of response content
         /// </summary>
         public string Content
         {
             get
             {
-                return this.content ?? (this.content = this.RawBytes.AsString());
+                if (this.content == null)
+                {
+                    this.content = this.RawBytes.AsString();
+                }
+
+                return this.content;
+            }
+
+            set
+            {
+                this.content = value;
             }
         }
+
         /// <summary>
         /// HTTP response status code
         /// </summary>
@@ -89,16 +108,15 @@ namespace RestSharp
         public string Server { get; set; }
 
         /// <summary>
-        /// Headers returned by server with the response
-        /// </summary>
-        public IList<HttpHeader> Headers { get; private set; }
-
-        /// <summary>
         /// Cookies returned by server with the response
         /// </summary>
-        public IList<HttpCookie> Cookies { get; private set; }
+        public IList<RestResponseCookie> Cookies { get; protected internal set; }
 
-
+        /// <summary>
+        /// Headers returned by server with the response
+        /// </summary>
+        public IList<Parameter> Headers { get; protected internal set; }
+        
         /// <summary>
         /// Status of the request. Will return Error for transport errors.
         /// HTTP errors will still return ResponseStatus.Completed, check StatusCode instead
@@ -109,6 +127,7 @@ namespace RestSharp
             {
                 return this.responseStatus;
             }
+
             set
             {
                 this.responseStatus = value;
@@ -121,11 +140,8 @@ namespace RestSharp
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// Exception thrown when error is encountered.
+        /// The exception thrown during the request, if any
         /// </summary>
         public Exception ErrorException { get; set; }
     }
 }
-
-// using moved into namespace
-// fields moved at top

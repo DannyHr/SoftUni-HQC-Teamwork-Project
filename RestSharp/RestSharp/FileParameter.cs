@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-
-namespace RestSharp
+﻿namespace RestSharp
 {
+    using System;
+    using System.IO;
+
     /// <summary>
     /// Container for files to be uploaded with requests
     /// </summary>
@@ -32,7 +32,7 @@ namespace RestSharp
         /// Name of the parameter
         /// </summary>
         public string Name { get; set; }
-        
+
         ///<summary>
         /// Creates a file parameter from an array of bytes.
         ///</summary>

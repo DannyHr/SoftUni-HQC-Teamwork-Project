@@ -1,7 +1,7 @@
-using System;
-
 namespace RestSharp
 {
+    using System;
+
     public class RestResponseCookie
     {
         /// <summary>

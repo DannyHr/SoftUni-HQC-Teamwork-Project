@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace RestSharp
+﻿namespace RestSharp
 {
+    using System;
+
     /// <summary>
     /// Representation of an HTTP cookie
     /// </summary>

@@ -326,6 +326,8 @@
       <Link>RestRequestAsyncHandle.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestResponseBase.cs" />
+    <Compile Include="RestResponseGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

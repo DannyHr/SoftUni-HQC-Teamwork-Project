@@ -14,14 +14,14 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using RestSharp.Serializers;
-
 namespace RestSharp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using RestSharp.Serializers;
+
     public interface IRestRequest
     {
         /// <summary>
@@ -128,6 +128,8 @@ namespace RestSharp
         /// will be sent along to the server. The default is false.
         /// </summary>
         bool UseDefaultCredentials { get; set; }
+
+        Action<IRestResponse> OnBeforeDeserialization { get; set; }
 
 #if FRAMEWORK
         /// <summary>
@@ -279,9 +281,10 @@ namespace RestSharp
         /// <param name="value">Value of the parameter to add</param>
         /// <returns></returns>
         IRestRequest AddQueryParameter(string name, string value);
-
-        Action<IRestResponse> OnBeforeDeserialization { get; set; }
-
+        
         void IncreaseNumAttempts();
     }
 }
+
+// usings placed inside namespace
+// properties moved above methods

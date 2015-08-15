@@ -159,7 +159,6 @@ using System.Windows;
                 // return the underlying HTTP response, otherwise assume a
                 // transport exception (ex: connection timeout) and
                 // rethrow the exception
-
                 if (ex.Response is HttpWebResponse)
                 {
                     raw = ex.Response as HttpWebResponse;
@@ -199,7 +198,7 @@ using System.Windows;
 
             try
             {
-                var url = Url;
+                var url = this.Url;
 
                 webRequest = this.ConfigureAsyncWebRequest(method, url);
 

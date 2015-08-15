@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-
-namespace RestSharp
+﻿namespace RestSharp
 {
+    using System;
+    using System.IO;
+
     /// <summary>
     /// Container for HTTP file
     /// </summary>

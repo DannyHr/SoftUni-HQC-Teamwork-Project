@@ -140,6 +140,7 @@
     <Compile Include="IRestRequest.cs" />
     <Compile Include="IRestResponse.cs" />
     <Compile Include="RestResponse.cs" />
+    <Compile Include="RestResponseBase.cs" />
     <Compile Include="Authenticators\IAuthenticator.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Authenticators\SimpleAuthenticator.cs" />
     <Compile Include="RestClient.Async.cs" />
     <Compile Include="Deserializers\DotNetXmlDeserializer.cs" />
+    <Compile Include="RestResponseGeneric.cs" />
     <Compile Include="Serializers\DotNetXmlSerializer.cs" />
     <Compile Include="Serializers\ISerializer.cs" />
     <Compile Include="Serializers\JsonSerializer.cs" />

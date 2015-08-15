@@ -42,7 +42,7 @@ namespace RestSharp
         /// <returns>String</returns>
         public override string ToString()
         {
-            return string.Format("{0}={1}", Name, Value);
+            return string.Format("{0}={1}", this.Name, this.Value);
         }
     }
 }

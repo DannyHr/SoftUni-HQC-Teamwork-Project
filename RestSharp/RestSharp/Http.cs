@@ -77,7 +77,7 @@ namespace RestSharp
         /// </summary>
         protected bool HasFiles
         {
-            get { return !Files.Any(); }
+            get { return Files.Any(); }
         }
 
         /// <summary>

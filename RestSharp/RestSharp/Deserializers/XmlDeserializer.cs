@@ -45,7 +45,9 @@ namespace RestSharp.Deserializers
         public virtual T Deserialize<T>(IRestResponse response)
         {
             if (string.IsNullOrEmpty(response.Content))
+            {
                 return default(T);
+            }
 
             var doc = XDocument.Parse(response.Content);
             var root = doc.Root;
@@ -111,7 +113,9 @@ namespace RestSharp.Deserializers
                 var typeIsPublic = type.IsPublic || type.IsNestedPublic;
 
                 if (!typeIsPublic || !prop.CanWrite)
+                {
                     continue;
+                }
 
                 var attributes = prop.GetCustomAttributes(typeof(DeserializeAsAttribute), false);
                 XName name;
@@ -318,12 +322,11 @@ namespace RestSharp.Deserializers
 
         private void PopulateListFromElements(Type t, IEnumerable<XElement> elements, IList list)
         {
-            // Uncomment to make tests pass
-            // foreach (var element in elements)
-            // {
-            //     var item = CreateAndMap(t, element);
-            //     list.Add(item);
-            // }
+            foreach (var element in elements)
+            {
+                var item = CreateAndMap(t, element);
+                list.Add(item);
+            }
         }
 
         private object HandleListDerivative(object x, XElement root, string propName, Type type)

@@ -75,7 +75,8 @@ namespace RestSharp
         /// Sets Method property to value of method
         /// </summary>
         /// <param name="method">Method to use for this request</param>
-        public RestRequest(Method method) : this()
+        public RestRequest(Method method)
+            : this()
         {
             this.Method = method;
         }
@@ -84,14 +85,18 @@ namespace RestSharp
         /// Sets Resource property
         /// </summary>
         /// <param name="resource">Resource to use for this request</param>
-        public RestRequest(string resource) : this(resource, Method.GET) { }
+        public RestRequest(string resource)
+            : this(resource, Method.GET)
+        {
+        }
 
         /// <summary>
         /// Sets Resource and Method properties
         /// </summary>
         /// <param name="resource">Resource to use for this request</param>
         /// <param name="method">Method to use for this request</param>
-        public RestRequest(string resource, Method method) : this()
+        public RestRequest(string resource, Method method)
+            : this()
         {
             this.Resource = resource;
             this.Method = method;
@@ -101,7 +106,10 @@ namespace RestSharp
         /// Sets Resource property
         /// </summary>
         /// <param name="resource">Resource to use for this request</param>
-        public RestRequest(Uri resource) : this(resource, Method.GET) { }
+        public RestRequest(Uri resource)
+            : this(resource, Method.GET)
+        {
+        }
 
         /// <summary>
         /// Sets Resource and Method properties
@@ -128,19 +136,19 @@ namespace RestSharp
             long fileLength = f.Length;
 
             return AddFile(new FileParameter
-                {
-                    Name = name,
-                    FileName = Path.GetFileName(path),
-                    ContentLength = fileLength,
-                    Writer = s =>
+            {
+                Name = name,
+                FileName = Path.GetFileName(path),
+                ContentLength = fileLength,
+                Writer = s =>
+                    {
+                        using (var file = new StreamReader(path))
                         {
-                            using (var file = new StreamReader(path))
-                            {
-                                file.BaseStream.CopyTo(s);
-                            }
-                        },
-                     ContentType = contentType
-                });
+                            file.BaseStream.CopyTo(s);
+                        }
+                    },
+                ContentType = contentType
+            });
         }
 
         /// <summary>
@@ -167,12 +175,12 @@ namespace RestSharp
         public IRestRequest AddFile(string name, Action<Stream> writer, string fileName, string contentType = null)
         {
             return AddFile(new FileParameter
-                           {
-                               Name = name,
-                               Writer = writer,
-                               FileName = fileName,
-                               ContentType = contentType
-                           });
+            {
+                Name = name,
+                Writer = writer,
+                FileName = fileName,
+                ContentType = contentType
+            });
         }
 
         private IRestRequest AddFile(FileParameter file)
@@ -299,7 +307,7 @@ namespace RestSharp
 
                     if (((Array)val).Length > 0 &&
                         elementType != null &&
-                        (elementType.IsPrimitive|| elementType.IsValueType || elementType == typeof(string)))
+                        (elementType.IsPrimitive || elementType.IsValueType || elementType == typeof(string)))
                     {
                         // convert the array to an array of strings
                         var values = (from object item in ((Array)val)
@@ -352,11 +360,11 @@ namespace RestSharp
         public IRestRequest AddParameter(string name, object value)
         {
             return this.AddParameter(new Parameter
-                                     {
-                                         Name = name,
-                                         Value = value,
-                                         Type = ParameterType.GetOrPost
-                                     });
+            {
+                Name = name,
+                Value = value,
+                Type = ParameterType.GetOrPost
+            });
         }
 
         /// <summary>
@@ -373,11 +381,11 @@ namespace RestSharp
         public IRestRequest AddParameter(string name, object value, ParameterType type)
         {
             return this.AddParameter(new Parameter
-                                     {
-                                         Name = name,
-                                         Value = value,
-                                         Type = type
-                                     });
+            {
+                Name = name,
+                Value = value,
+                Type = type
+            });
         }
 
         /// <summary>

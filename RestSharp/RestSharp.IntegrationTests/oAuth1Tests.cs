@@ -66,8 +66,7 @@ namespace RestSharp.IntegrationTests
 
             request = new RestRequest("account/verify_credentials.xml");
             client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-                consumerKey, consumerSecret, oauth_token, oauth_token_secret
-            );
+                consumerKey, consumerSecret, oauth_token, oauth_token_secret);
 
             response = client.Execute(request);
 

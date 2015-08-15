@@ -256,25 +256,27 @@ namespace RestSharp.Tests
             root.Add(new XElement(ns + "UniqueId", new Guid(GuidString)));
             root.Add(new XElement(ns + "Url", "http://example.com"));
             root.Add(new XElement(ns + "UrlPath", "/foo/bar"));
-            root.Add(new XElement(ns + "BestFriend",
-                        new XElement(ns + "Name", "The Fonz"),
-                        new XElement(ns + "Since", 1952)
-                    ));
+            root.Add(new XElement(
+                ns + "BestFriend",
+                new XElement(ns + "Name", "The Fonz"),
+                new XElement(ns + "Since", 1952)));
 
             var friends = new XElement(ns + "Friends");
 
             for (int i = 0; i < 10; i++)
             {
-                friends.Add(new XElement(ns + "Friend",
-                                new XElement(ns + "Name", "Friend" + i),
-                                new XElement(ns + "Since", DateTime.Now.Year - i)
-                            ));
+                friends.Add(new XElement(
+                    ns + "Friend", 
+                    new XElement(ns + "Name", "Friend" + i),
+                    new XElement(ns + "Since", DateTime.Now.Year - i)));
             }
 
             root.Add(friends);
-            root.Add(new XElement(ns + "FavoriteBand",
-                        new XElement(ns + "Name", "Goldfinger")
-                    ));
+
+            root.Add(
+                new XElement(
+                    ns + "FavoriteBand", 
+                    new XElement(ns + "Name", "Goldfinger")));
 
             doc.Add(root);
             return doc.ToString();

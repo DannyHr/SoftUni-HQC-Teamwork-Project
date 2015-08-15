@@ -23,7 +23,10 @@ namespace RestSharp.Build
 
         public string SourceAssemblyFile { get; set; }
 
-        public NuSpecUpdateTask() : this(null) { }
+        public NuSpecUpdateTask()
+            : this(null)
+        {
+        }
 
         public NuSpecUpdateTask(Assembly assembly)
         {

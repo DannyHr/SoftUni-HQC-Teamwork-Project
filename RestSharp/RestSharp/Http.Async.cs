@@ -299,7 +299,7 @@ using System.Windows;
             {
                 length += this.Encoding.GetByteCount(GetMultipartFileHeader(file));
                 length += file.ContentLength;
-                length += this.Encoding.GetByteCount(LINE_BREAK);
+                length += this.Encoding.GetByteCount(LineBreak);
             }
 
             length = this.Parameters.Aggregate(

@@ -36,8 +36,9 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 
-namespace RestSharp.Contrib
+namespace RestSharp.Extensions
 {
+    using RestSharp.Extensions.MonoHttp;
 
     //#if !MONOTOUCH
     //    // CAS - no InheritanceDemand here as the class is sealed

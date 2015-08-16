@@ -1,4 +1,4 @@
-﻿//
+﻿
 // System.Web.Util.Helpers
 //
 // Authors:
@@ -6,7 +6,7 @@
 //
 // (C) 2009 Novell, Inc (http://novell.com)
 
-//
+
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -26,12 +26,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Globalization;
 
-namespace RestSharp.Contrib
+namespace RestSharp.Extensions.MonoHttp
 {
-    class Helpers
+    using System.Globalization;
+
+    public class Helpers
     {
         public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
     }
 }
+
+//done some refactoring according to styleCop hints
+//added access modifier for the class

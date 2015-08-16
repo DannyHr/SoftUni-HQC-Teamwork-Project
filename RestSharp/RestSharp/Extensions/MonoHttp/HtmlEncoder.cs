@@ -30,41 +30,44 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+
+
 #if NET_4_0
 using System.Web.Configuration;
 #endif
 
-namespace RestSharp.Contrib
+namespace RestSharp.Extensions.MonoHttp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+
 #if NET_4_0
     public
 #endif
-    class HttpEncoder
+    public class HttpEncoder
     {
-        static char[] hexChars = "0123456789abcdef".ToCharArray();
-        static object entitiesLock = new object();
+        private static readonly char[] HexChars = "0123456789abcdef".ToCharArray(); // done some refactoring - readonly private and changed to Pascal case
+        private static readonly object EntitiesLock = new object(); // done some refactoring
 #if PocketPC
-        static Dictionary<string, char> entities;
+        static Dictionary<string, char> entitprivate ies;
 #else
-        static SortedDictionary<string, char> entities;
+        private static SortedDictionary<string, char> entities; // added access modifier
 #endif
 #if NET_4_0
         static Lazy <HttpEncoder> defaultEncoder;
         static Lazy <HttpEncoder> currentEncoderLazy;
 #else
-        static HttpEncoder defaultEncoder;
+        private static readonly HttpEncoder DefaultEncoder;
 #endif
-        static HttpEncoder currentEncoder;
+        private static readonly HttpEncoder CurrentEncoder;
 
         static IDictionary<string, char> Entities
         {
             get
             {
-                lock (entitiesLock)
+                lock (EntitiesLock)
                 {
                     if (entities == null)
                         InitEntities();
@@ -82,7 +85,7 @@ namespace RestSharp.Contrib
                 if (currentEncoder == null)
                     currentEncoder = currentEncoderLazy.Value;
 #endif
-                return currentEncoder;
+                return CurrentEncoder;
             }
 #if NET_4_0
             set
@@ -101,7 +104,7 @@ namespace RestSharp.Contrib
 #if NET_4_0
                 return defaultEncoder.Value;
 #else
-                return defaultEncoder;
+                return DefaultEncoder;
 #endif
             }
         }
@@ -112,12 +115,10 @@ namespace RestSharp.Contrib
             defaultEncoder = new Lazy <HttpEncoder> (() => new HttpEncoder ());
             currentEncoderLazy = new Lazy <HttpEncoder> (new Func <HttpEncoder> (GetCustomEncoderFromConfig));
 #else
-            defaultEncoder = new HttpEncoder();
-            currentEncoder = defaultEncoder;
+            DefaultEncoder = new HttpEncoder();
+            CurrentEncoder = DefaultEncoder;
 #endif
         }
-
-        public HttpEncoder() { }
 
 #if NET_4_0
         protected internal virtual
@@ -624,13 +625,13 @@ namespace RestSharp.Contrib
                 result.WriteByte((byte)'%');
                 result.WriteByte((byte)'u');
                 idx = i >> 12;
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
                 idx = (i >> 8) & 0x0F;
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
                 idx = (i >> 4) & 0x0F;
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
                 idx = i & 0x0F;
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
 
                 return;
             }
@@ -664,9 +665,9 @@ namespace RestSharp.Contrib
 
                 int idx = ((int)c) >> 4;
 
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
                 idx = ((int)c) & 0x0F;
-                result.WriteByte((byte)hexChars[idx]);
+                result.WriteByte((byte)HexChars[idx]);
             }
             else
                 result.WriteByte((byte)c);
@@ -684,9 +685,9 @@ namespace RestSharp.Contrib
 
                     int idx = ((int)bIn[i]) >> 4;
 
-                    result.WriteByte((byte)hexChars[idx]);
+                    result.WriteByte((byte)HexChars[idx]);
                     idx = ((int)bIn[i]) & 0x0F;
-                    result.WriteByte((byte)hexChars[idx]);
+                    result.WriteByte((byte)HexChars[idx]);
                 }
             }
             else if (c == ' ')
@@ -963,3 +964,7 @@ namespace RestSharp.Contrib
         }
     }
 }
+// done some refactoring according to styleCop hints
+// moved the directives in the namespace
+// changed the namespace path in order to be correct
+// to be continued...  

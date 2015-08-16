@@ -191,9 +191,9 @@ namespace RestSharp
         /// Parameters included with every request made with this instance of RestClient
         /// If specified in both client and request, the request wins
         /// </summary>
-        public IList<Parameter> DefaultParameters { get; }
+        public IList<Parameter> DefaultParameters { get; set; } //added set
 
-        private IDictionary<string, IDeserializer> ContentHandlers { get; }
+        private IDictionary<string, IDeserializer> ContentHandlers { get; set; } //added set
 
         private IList<string> AcceptTypes { get; set; }
 
@@ -665,3 +665,5 @@ namespace RestSharp
 // ctors placed after fields
 // props placed agter ctors
 // public, private static, private methods placed in correct order
+
+//added setter in some properties in order to build the solution

@@ -6,13 +6,14 @@ using System.Net;
 using System.Xml.Serialization;
 using RestSharp.Authenticators;
 using RestSharp.Authenticators.OAuth;
-using RestSharp.Extensions;
 using RestSharp.IntegrationTests.Models;
 using Xunit;
 using System.IO;
 
 namespace RestSharp.IntegrationTests
 {
+    using RestSharp.Extensions.MonoHttp;
+
     public class oAuth1Tests
     {
         [Fact(Skip = "Provide your own consumer key/secret before running")]

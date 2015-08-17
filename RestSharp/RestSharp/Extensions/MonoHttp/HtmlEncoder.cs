@@ -1,16 +1,13 @@
-﻿//
-// Authors:
+﻿// Authors:
 //   Patrik Torstensson (Patrik.Torstensson@labs2.com)
 //   Wictor WilÃ©n (decode/encode functions) (wictor@ibizkit.se)
 //   Tim Coleman (tim@timcoleman.com)
 //   Gonzalo Paniagua Javier (gonzalo@ximian.com)
 
-//   Marek Habersack <mhabersack@novell.com>
+// Marek Habersack <mhabersack@novell.com>
 //
 // (C) 2005-2010 Novell, Inc (http://novell.com/)
-//
 
-//
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -29,12 +26,6 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
-
-#if NET_4_0
-using System.Web.Configuration;
-#endif
 
 namespace RestSharp.Extensions.MonoHttp
 {
@@ -42,6 +33,9 @@ namespace RestSharp.Extensions.MonoHttp
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
+#if NET_4_0
+using System.Web.Configuration;
+#endif
 
 #if NET_4_0
     public
@@ -70,7 +64,9 @@ namespace RestSharp.Extensions.MonoHttp
                 lock (EntitiesLock)
                 {
                     if (entities == null)
+                    {
                         InitEntities();
+                    }
 
                     return entities;
                 }
@@ -149,9 +145,14 @@ namespace RestSharp.Extensions.MonoHttp
         internal static void StringBuilderAppend(string s, ref StringBuilder sb)
         {
             if (sb == null)
+            {
                 sb = new StringBuilder(s);
+            }
+
             else
+            {
                 sb.Append(s);
+            }
         }
 
         internal static string EncodeHeaderString(string input)
@@ -267,7 +268,9 @@ namespace RestSharp.Extensions.MonoHttp
             int blen = bytes.Length;
 
             if (blen == 0)
+            {
                 return new byte[0];
+            }
 
             if (offset < 0 || offset >= blen)
             {
@@ -425,6 +428,7 @@ namespace RestSharp.Extensions.MonoHttp
             int len = s.Length;
 
             for (int i = 0; i < len; i++)
+            {
                 switch (s[i])
                 {
                     case '&':
@@ -449,6 +453,7 @@ namespace RestSharp.Extensions.MonoHttp
                         output.Append(s[i]);
                         break;
                 }
+            }
 
             return output.ToString();
         }
@@ -602,7 +607,7 @@ namespace RestSharp.Extensions.MonoHttp
                     }
                     else if (isHexValue && Uri.IsHexDigit(c))
                     {
-                        number = number * 16 + Uri.FromHex(c);
+                        number = (number * 16) + Uri.FromHex(c);
                         haveTrailingDigits = true;
 #if NET_4_0
                         rawEntity.Append (c);
@@ -610,7 +615,7 @@ namespace RestSharp.Extensions.MonoHttp
                     }
                     else if (char.IsDigit(c))
                     {
-                        number = number * 10 + ((int)c - '0');
+                        number = (number * 10) + ((int)c - '0');
                         haveTrailingDigits = true;
 #if NET_4_0
                         rawEntity.Append (c);
@@ -663,9 +668,9 @@ namespace RestSharp.Extensions.MonoHttp
         {
             if (c > 255)
             {
-                //FIXME: what happens when there is an internal error?
-                //if (!isUnicode)
-                //    throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
+                // FIXME: what happens when there is an internal error?
+                // if (!isUnicode)
+                // throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
                 int idx;
                 int i = (int)c;
 
@@ -745,7 +750,9 @@ namespace RestSharp.Extensions.MonoHttp
                 result.WriteByte((byte)'0');
             }
             else
+            {
                 result.WriteByte((byte)c);
+            }
         }
 
         internal static void InitEntities()
@@ -1012,6 +1019,7 @@ namespace RestSharp.Extensions.MonoHttp
         }
     }
 }
+
 // done some refactoring according to styleCop hints
 // moved the directives in the namespace
 // changed the namespace path in order to be correct

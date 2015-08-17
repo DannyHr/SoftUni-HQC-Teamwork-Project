@@ -14,27 +14,26 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Globalization;
-
+namespace RestSharp.Extensions
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
 #if SILVERLIGHT
 using System.Windows.Browser;
 #endif
-
+    
 #if WINDOWS_PHONE
 #endif
 
 #if FRAMEWORK || MONOTOUCH || MONODROID
-using RestSharp.Extensions;
+    using RestSharp.Extensions.MonoHttp;
 #endif
 
-namespace RestSharp.Extensions
-{
     public static class StringExtensions
     {
 #if !PocketPC
@@ -133,7 +132,9 @@ namespace RestSharp.Extensions
             {
                 unix = long.Parse(input);
             }
-            catch (Exception) { };
+            catch (Exception)
+            {
+            }
 
             if (unix.HasValue)
             {
@@ -149,6 +150,7 @@ namespace RestSharp.Extensions
             if (input.Contains("new Date("))
             {
                 input = input.Replace(" ", string.Empty);
+
                 // because all whitespace is removed, match against newDate( instead of new Date(
                 return ExtractDate(input, @"newDate\((-?\d+)*\)", culture);
             }
@@ -170,85 +172,6 @@ namespace RestSharp.Extensions
             }
 
             return input;
-        }
-
-        private static DateTime ParseFormattedDate(string input, CultureInfo culture)
-        {
-            var formats = new[]
-            {
-                "u",
-                "s",
-                "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
-                "yyyy-MM-ddTHH:mm:ssZ",
-                "yyyy-MM-dd HH:mm:ssZ",
-                "yyyy-MM-ddTHH:mm:ss",
-                "yyyy-MM-ddTHH:mm:sszzzzzz",
-                "M/d/yyyy h:mm:ss tt" // default format for invariant culture
-            };
-
-#if PocketPC
-            foreach (string format in formats)
-            {
-                try
-                {
-                    return DateTime.ParseExact(input, format, culture);
-                }
-                catch (Exception) { }
-            }
-
-            try
-            {
-                return DateTime.Parse(input, culture);
-            }
-            catch (Exception) { }
-#else
-            DateTime date;
-
-            if (DateTime.TryParseExact(input, formats, culture, DateTimeStyles.None, out date))
-            {
-                return date;
-            }
-
-            if (DateTime.TryParse(input, culture, DateTimeStyles.None, out date))
-            {
-                return date;
-            }
-#endif
-
-            return default(DateTime);
-        }
-
-        private static DateTime ExtractDate(string input, string pattern, CultureInfo culture)
-        {
-            DateTime dt = DateTime.MinValue;
-            var regex = new Regex(pattern);
-
-            if (regex.IsMatch(input))
-            {
-                var matches = regex.Matches(input);
-                var match = matches[0];
-                var ms = Convert.ToInt64(match.Groups[1].Value);
-                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-                dt = epoch.AddMilliseconds(ms);
-
-                // adjust if time zone modifier present
-                if (match.Groups.Count > 2 && !String.IsNullOrEmpty(match.Groups[3].Value))
-                {
-                    var mod = DateTime.ParseExact(match.Groups[3].Value, "HHmm", culture);
-
-                    if (match.Groups[2].Value == "+")
-                    {
-                        dt = dt.Add(mod.TimeOfDay);
-                    }
-                    else
-                    {
-                        dt = dt.Subtract(mod.TimeOfDay);
-                    }
-                }
-            }
-
-            return dt;
         }
 
         /// <summary>
@@ -289,7 +212,7 @@ namespace RestSharp.Extensions
 
             text = text.Replace("_", " ");
 
-            string joinString = removeUnderscores ? String.Empty : "_";
+            string joinString = removeUnderscores ? string.Empty : "_";
             string[] words = text.Split(' ');
 
             if (words.Length > 1 || words[0].IsUpperCase())
@@ -452,7 +375,87 @@ namespace RestSharp.Extensions
             // try name with spaces with lower case
             yield return name.AddSpaces().ToLower(culture);
         }
+
+        private static DateTime ParseFormattedDate(string input, CultureInfo culture)
+        {
+            var formats = new[]
+            {
+                "u",
+                "s",
+                "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'",
+                "yyyy-MM-ddTHH:mm:ssZ",
+                "yyyy-MM-dd HH:mm:ssZ",
+                "yyyy-MM-ddTHH:mm:ss",
+                "yyyy-MM-ddTHH:mm:sszzzzzz",
+                "M/d/yyyy h:mm:ss tt" // default format for invariant culture
+            };
+
+#if PocketPC
+            foreach (string format in formats)
+            {
+                try
+                {
+                    return DateTime.ParseExact(input, format, culture);
+                }
+                catch (Exception) { }
+            }
+
+            try
+            {
+                return DateTime.Parse(input, culture);
+            }
+            catch (Exception) { }
+#else
+            DateTime date;
+
+            if (DateTime.TryParseExact(input, formats, culture, DateTimeStyles.None, out date))
+            {
+                return date;
+            }
+
+            if (DateTime.TryParse(input, culture, DateTimeStyles.None, out date))
+            {
+                return date;
+            }
+#endif
+
+            return default(DateTime);
+        }
+
+        private static DateTime ExtractDate(string input, string pattern, CultureInfo culture)
+        {
+            DateTime dt = DateTime.MinValue;
+            var regex = new Regex(pattern);
+
+            if (regex.IsMatch(input))
+            {
+                var matches = regex.Matches(input);
+                var match = matches[0];
+                var ms = Convert.ToInt64(match.Groups[1].Value);
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+                dt = epoch.AddMilliseconds(ms);
+
+                // adjust if time zone modifier present
+                if (match.Groups.Count > 2 && !string.IsNullOrEmpty(match.Groups[3].Value))
+                {
+                    var mod = DateTime.ParseExact(match.Groups[3].Value, "HHmm", culture);
+
+                    if (match.Groups[2].Value == "+")
+                    {
+                        dt = dt.Add(mod.TimeOfDay);
+                    }
+                    else
+                    {
+                        dt = dt.Subtract(mod.TimeOfDay);
+                    }
+                }
+            }
+
+            return dt;
+        }
     }
 }
+
 // done some refactoring accoridng ot styleCop hints
 // please check it again

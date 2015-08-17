@@ -14,11 +14,11 @@
 //   limitations under the License. 
 #endregion
 
-using System.IO;
-using System.Text;
-
 namespace RestSharp.Extensions
 {
+    using System.IO;
+    using System.Text;
+
     /// <summary>
     /// Extension method overload!
     /// </summary>
@@ -72,7 +72,9 @@ namespace RestSharp.Extensions
                 var read = input.Read(buffer, 0, buffer.Length);
 
                 if (read <= 0)
+                {
                     return;
+                }
 
                 output.Write(buffer, 0, read);
             }
@@ -88,7 +90,7 @@ namespace RestSharp.Extensions
         {
             if (buffer == null)
             {
-                return "";
+                return string.Empty;
             }
 
             // Ansi as default
@@ -98,7 +100,9 @@ namespace RestSharp.Extensions
             return encoding.GetString(buffer, 0, buffer.Length);
 #else
             if (buffer == null || buffer.Length == 0)
-                return "";
+            {
+                return string.Empty;
+            }
 
             /*
                 EF BB BF            UTF-8 

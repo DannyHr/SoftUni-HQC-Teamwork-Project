@@ -1,5 +1,4 @@
-﻿
-namespace RestSharp.Extensions
+﻿namespace RestSharp.Extensions
 {
     public static class ResponseExtensions
     {

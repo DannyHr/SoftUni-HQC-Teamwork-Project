@@ -64,11 +64,11 @@
 
 #if WINDOWS_PHONE
 
-using System;
-using Interop = System.Runtime.InteropServices;
-
 namespace RestSharp.Compression.ZLib
 {
+    using System;
+    using Interop = System.Runtime.InteropServices;
+    
     /// <summary>
     /// A general purpose exception class for exceptions in the Zlib library.
     /// </summary>

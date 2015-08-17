@@ -14,13 +14,13 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Net;
-
 #if FRAMEWORK
 
-namespace RestSharp
+namespace RestSharp.Authenticators
 {
+    using System;
+    using System.Net;
+
     /// <summary>
     /// Tries to Authenticate with the credentials of the currently logged in user, or impersonate a user
     /// </summary>
@@ -32,7 +32,9 @@ namespace RestSharp
         /// Authenticate with the credentials of the currently logged in user
         /// </summary>
         public NtlmAuthenticator()
-            : this(CredentialCache.DefaultCredentials) { }
+            : this(CredentialCache.DefaultCredentials)
+        {
+        }
 
         /// <summary>
         /// Authenticate by impersonation
@@ -40,7 +42,9 @@ namespace RestSharp
         /// <param name="username"></param>
         /// <param name="password"></param>
         public NtlmAuthenticator(string username, string password)
-            : this(new NetworkCredential(username, password)) { }
+            : this(new NetworkCredential(username, password))
+        {
+        }
 
         /// <summary>
         /// Authenticate by impersonation, using an existing <c>ICredentials</c> instance
@@ -49,14 +53,16 @@ namespace RestSharp
         public NtlmAuthenticator(ICredentials credentials)
         {
             if (credentials == null)
+            {
                 throw new ArgumentNullException("credentials");
-
+            }
+            
             this.credentials = credentials;
         }
 
         public void Authenticate(IRestClient client, IRestRequest request)
         {
-            request.Credentials = credentials;
+            request.Credentials = this.credentials;
         }
     }
 }

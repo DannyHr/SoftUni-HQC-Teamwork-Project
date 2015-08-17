@@ -14,14 +14,14 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-
 namespace RestSharp.Deserializers
 {
+    using System;
+
     /// <summary>
     /// Allows control how class and property names and values are deserialized by XmlAttributeDeserializer
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, Inherited = false)]
     public sealed class DeserializeAsAttribute : Attribute
     {
         /// <summary>

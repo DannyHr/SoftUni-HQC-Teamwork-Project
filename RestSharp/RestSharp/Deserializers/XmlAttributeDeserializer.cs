@@ -14,19 +14,19 @@
 //   limitations under the License. 
 #endregion
 
-using System.Reflection;
-using System.Xml.Linq;
-using RestSharp.Extensions;
-
 namespace RestSharp.Deserializers
 {
+    using System.Reflection;
+    using System.Xml.Linq;
+    using RestSharp.Extensions;
+
     public class XmlAttributeDeserializer : XmlDeserializer
     {
         protected override object GetValueFromXml(XElement root, XName name, PropertyInfo prop)
         {
             var isAttribute = false;
 
-            //Check for the DeserializeAs attribute on the property
+            // Check for the DeserializeAs attribute on the property
             var options = prop.GetAttribute<DeserializeAsAttribute>();
 
             if (options != null)
@@ -37,7 +37,7 @@ namespace RestSharp.Deserializers
 
             if (isAttribute)
             {
-                var attributeVal = GetAttributeByName(root, name);
+                var attributeVal = this.GetAttributeByName(root, name);
 
                 if (attributeVal != null)
                 {

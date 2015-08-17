@@ -14,15 +14,15 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Collections;
-using System.Globalization;
-using System.Linq;
-using System.Xml.Linq;
-using RestSharp.Extensions;
-
 namespace RestSharp.Serializers
 {
+    using System;
+    using System.Collections;
+    using System.Globalization;
+    using System.Linq;
+    using System.Xml.Linq;
+    using RestSharp.Extensions;
+
     /// <summary>
     /// Default XML Serializer
     /// </summary>
@@ -33,7 +33,7 @@ namespace RestSharp.Serializers
         /// </summary>
         public XmlSerializer()
         {
-            ContentType = "text/xml";
+            this.ContentType = "text/xml";
         }
 
         /// <summary>
@@ -42,9 +42,29 @@ namespace RestSharp.Serializers
         /// <param name="namespace">XML namespace</param>
         public XmlSerializer(string @namespace)
         {
-            Namespace = @namespace;
-            ContentType = "text/xml";
+            this.Namespace = @namespace;
+            this.ContentType = "text/xml";
         }
+
+        /// <summary>
+        /// Name of the root element to use when serializing
+        /// </summary>
+        public string RootElement { get; set; }
+
+        /// <summary>
+        /// XML namespace to use when serializing
+        /// </summary>
+        public string Namespace { get; set; }
+
+        /// <summary>
+        /// Format string to use when serializing dates
+        /// </summary>
+        public string DateFormat { get; set; }
+
+        /// <summary>
+        /// Content type for serialized content
+        /// </summary>
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Serialize the object as XML
@@ -63,11 +83,11 @@ namespace RestSharp.Serializers
                 name = options.TransformName(options.Name ?? name);
             }
 
-            var root = new XElement(name.AsNamespaced(Namespace));
+            var root = new XElement(name.AsNamespaced(this.Namespace));
 
             if (obj is IList)
             {
-                var itemTypeName = "";
+                var itemTypeName = string.Empty;
 
                 foreach (var item in (IList)obj)
                 {
@@ -79,23 +99,25 @@ namespace RestSharp.Serializers
                         itemTypeName = opts.TransformName(opts.Name ?? name);
                     }
 
-                    if (itemTypeName == "")
+                    if (itemTypeName == string.Empty)
                     {
                         itemTypeName = type.Name;
                     }
 
-                    var instance = new XElement(itemTypeName.AsNamespaced(Namespace));
+                    var instance = new XElement(itemTypeName.AsNamespaced(this.Namespace));
 
-                    Map(instance, item);
+                    this.Map(instance, item);
                     root.Add(instance);
                 }
             }
             else
-                Map(root, obj);
-
-            if (RootElement.HasValue())
             {
-                var wrapper = new XElement(RootElement.AsNamespaced(Namespace), root);
+                this.Map(root, obj);
+            }
+
+            if (this.RootElement.HasValue())
+            {
+                var wrapper = new XElement(this.RootElement.AsNamespaced(this.Namespace), root);
                 doc.Add(wrapper);
             }
             else
@@ -104,6 +126,105 @@ namespace RestSharp.Serializers
             }
 
             return doc.ToString();
+        }
+
+        private static string SerializeNumber(object number)
+        {
+            if (number is long)
+            {
+                return ((long)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (number is ulong)
+            {
+                return ((ulong)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (number is int)
+            {
+                return ((int)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (number is uint)
+            {
+                return ((uint)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (number is decimal)
+            {
+                return ((decimal)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (number is float)
+            {
+                return ((float)number).ToString(CultureInfo.InvariantCulture);
+            }
+
+            return Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Determines if a given object is numeric in any way
+        /// (can be integer, double, null, etc).
+        /// </summary>
+        private static bool IsNumeric(object value)
+        {
+            if (value is sbyte)
+            {
+                return true;
+            }
+
+            if (value is byte)
+            {
+                return true;
+            }
+
+            if (value is short)
+            {
+                return true;
+            }
+
+            if (value is ushort)
+            {
+                return true;
+            }
+
+            if (value is int)
+            {
+                return true;
+            }
+
+            if (value is uint)
+            {
+                return true;
+            }
+
+            if (value is long)
+            {
+                return true;
+            }
+
+            if (value is ulong)
+            {
+                return true;
+            }
+
+            if (value is float)
+            {
+                return true;
+            }
+
+            if (value is double)
+            {
+                return true;
+            }
+
+            if (value is decimal)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void Map(XElement root, object obj)
@@ -126,7 +247,7 @@ namespace RestSharp.Serializers
                     continue;
                 }
 
-                var value = GetSerializedValue(rawValue);
+                var value = this.GetSerializedValue(rawValue);
                 var propType = prop.PropertyType;
                 var useAttribute = false;
                 var settings = prop.GetAttribute<SerializeAsAttribute>();
@@ -148,8 +269,8 @@ namespace RestSharp.Serializers
                     name = globalOptions.TransformName(name);
                 }
 
-                var nsName = name.AsNamespaced(Namespace);
-                var element = new XElement(nsName);
+                var namespacedName = name.AsNamespaced(this.Namespace);
+                var element = new XElement(namespacedName);
 
                 if (propType.IsPrimitive || propType.IsValueType || propType == typeof(string))
                 {
@@ -163,11 +284,11 @@ namespace RestSharp.Serializers
                 }
                 else if (rawValue is IList)
                 {
-                    var itemTypeName = "";
+                    var itemTypeName = string.Empty;
 
                     foreach (var item in (IList)rawValue)
                     {
-                        if (itemTypeName == "")
+                        if (itemTypeName == string.Empty)
                         {
                             var type = item.GetType();
                             var setting = type.GetAttribute<SerializeAsAttribute>();
@@ -176,15 +297,15 @@ namespace RestSharp.Serializers
                                 : type.Name;
                         }
 
-                        var instance = new XElement(itemTypeName.AsNamespaced(Namespace));
+                        var instance = new XElement(itemTypeName.AsNamespaced(this.Namespace));
 
-                        Map(instance, item);
+                        this.Map(instance, item);
                         element.Add(instance);
                     }
                 }
                 else
                 {
-                    Map(element, rawValue);
+                    this.Map(element, rawValue);
                 }
 
                 root.Add(element);
@@ -195,9 +316,9 @@ namespace RestSharp.Serializers
         {
             var output = obj;
 
-            if (obj is DateTime && DateFormat.HasValue())
+            if (obj is DateTime && this.DateFormat.HasValue())
             {
-                output = ((DateTime)obj).ToString(DateFormat, CultureInfo.InvariantCulture);
+                output = ((DateTime)obj).ToString(this.DateFormat, CultureInfo.InvariantCulture);
             }
 
             if (obj is bool)
@@ -212,90 +333,5 @@ namespace RestSharp.Serializers
 
             return output.ToString();
         }
-
-        static string SerializeNumber(object number)
-        {
-            if (number is long)
-                return ((long)number).ToString(CultureInfo.InvariantCulture);
-
-            if (number is ulong)
-                return ((ulong)number).ToString(CultureInfo.InvariantCulture);
-
-            if (number is int)
-                return ((int)number).ToString(CultureInfo.InvariantCulture);
-
-            if (number is uint)
-                return ((uint)number).ToString(CultureInfo.InvariantCulture);
-
-            if (number is decimal)
-                return ((decimal)number).ToString(CultureInfo.InvariantCulture);
-
-            if (number is float)
-                return ((float)number).ToString(CultureInfo.InvariantCulture);
-
-            return (Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// Determines if a given object is numeric in any way
-        /// (can be integer, double, null, etc).
-        /// </summary>
-        static bool IsNumeric(object value)
-        {
-            if (value is sbyte)
-                return true;
-
-            if (value is byte)
-                return true;
-
-            if (value is short)
-                return true;
-
-            if (value is ushort)
-                return true;
-
-            if (value is int)
-                return true;
-
-            if (value is uint)
-                return true;
-
-            if (value is long)
-                return true;
-
-            if (value is ulong)
-                return true;
-
-            if (value is float)
-                return true;
-
-            if (value is double)
-                return true;
-
-            if (value is decimal)
-                return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Name of the root element to use when serializing
-        /// </summary>
-        public string RootElement { get; set; }
-
-        /// <summary>
-        /// XML namespace to use when serializing
-        /// </summary>
-        public string Namespace { get; set; }
-
-        /// <summary>
-        /// Format string to use when serializing dates
-        /// </summary>
-        public string DateFormat { get; set; }
-
-        /// <summary>
-        /// Content type for serialized content
-        /// </summary>
-        public string ContentType { get; set; }
     }
 }

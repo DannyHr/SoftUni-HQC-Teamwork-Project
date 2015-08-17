@@ -65,11 +65,11 @@
 
 #if WINDOWS_PHONE
 
-using System;
-using Interop = System.Runtime.InteropServices;
-
 namespace RestSharp.Compression.ZLib
 {
+    using System;
+    using Interop = System.Runtime.InteropServices;
+
     /// <summary>
     /// Encoder and Decoder for ZLIB and DEFLATE (IETF RFC1950 and RFC1951).
     /// </summary>

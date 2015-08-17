@@ -14,25 +14,36 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using RestSharp.Extensions;
-using System.Globalization;
-
 namespace RestSharp.Serializers
 {
+    using System;
+    using System.Globalization;
+    using RestSharp.Extensions;
+
+    /// <summary>
+    /// Options for transforming casing of element names
+    /// </summary>
+    public enum NameStyle
+    {
+        AsIs,
+        CamelCase,
+        LowerCase,
+        PascalCase
+    }
+
     /// <summary>
     /// Allows control how class and property names and values are serialized by XmlSerializer
     /// Currently not supported with the JsonSerializer
     /// When specified at the property level the class-level specification is overridden
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, Inherited = false)]
     public sealed class SerializeAsAttribute : Attribute
     {
         public SerializeAsAttribute()
         {
-            NameStyle = NameStyle.AsIs;
-            Index = int.MaxValue;
-            Culture = CultureInfo.InvariantCulture;
+            this.NameStyle = NameStyle.AsIs;
+            this.Index = int.MaxValue;
+            this.Culture = CultureInfo.InvariantCulture;
         }
 
         /// <summary>
@@ -69,13 +80,13 @@ namespace RestSharp.Serializers
         {
             var name = this.Name ?? input;
 
-            switch (NameStyle)
+            switch (this.NameStyle)
             {
                 case NameStyle.CamelCase:
-                    return name.ToCamelCase(Culture);
+                    return name.ToCamelCase(this.Culture);
 
                 case NameStyle.PascalCase:
-                    return name.ToPascalCase(Culture);
+                    return name.ToPascalCase(this.Culture);
 
                 case NameStyle.LowerCase:
                     return name.ToLower();
@@ -83,16 +94,5 @@ namespace RestSharp.Serializers
 
             return input;
         }
-    }
-
-    /// <summary>
-    /// Options for transforming casing of element names
-    /// </summary>
-    public enum NameStyle
-    {
-        AsIs,
-        CamelCase,
-        LowerCase,
-        PascalCase
     }
 }

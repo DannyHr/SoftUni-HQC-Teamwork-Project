@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using RestSharp.Authenticators.OAuth.Extensions;
-
 namespace RestSharp.Authenticators.OAuth
 {
+    using System;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using RestSharp.Authenticators.OAuth.Extensions;
+
 #if !SILVERLIGHT && !WINDOWS_PHONE && !PocketPC
     [Serializable]
 #endif
@@ -18,7 +18,7 @@ namespace RestSharp.Authenticators.OAuth
         private const string Upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         private static readonly Random _random;
-        private static readonly object _randomLock = new object();
+        private static readonly object randomLock = new object();
 
 #if !SILVERLIGHT && !WINDOWS_PHONE && !PocketPC
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
@@ -48,10 +48,10 @@ namespace RestSharp.Authenticators.OAuth
         /// <returns></returns>
         public static string GetNonce()
         {
-            const string chars = (Lower + Digit);
+            const string chars = Lower + Digit;
             var nonce = new char[16];
 
-            lock (_randomLock)
+            lock (randomLock)
             {
                 for (var i = 0; i < nonce.Length; i++)
                 {
@@ -141,7 +141,7 @@ namespace RestSharp.Authenticators.OAuth
             // Generic Syntax," .) section 2.3) MUST be encoded.
             // ...
             // unreserved = ALPHA, DIGIT, '-', '.', '_', '~'
-            String result = "";
+            string result = "";
             value.ForEach(c =>
             {
                 result += Unreserved.Contains(c) 
@@ -209,7 +209,7 @@ namespace RestSharp.Authenticators.OAuth
             var secure = url.Scheme == "https" && url.Port == 443;
 
             sb.Append(requestUrl);
-            sb.Append(!basic && !secure ? qualified : "");
+            sb.Append(!basic && !secure ? qualified : string.Empty);
             sb.Append(url.AbsolutePath);
 
             return sb.ToString(); //.ToLower();
@@ -302,7 +302,7 @@ namespace RestSharp.Authenticators.OAuth
         {
             if (tokenSecret.IsNullOrBlank())
             {
-                tokenSecret = String.Empty;
+                tokenSecret = string.Empty;
             }
 
             consumerSecret = UrlEncodeRelaxed(consumerSecret);

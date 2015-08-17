@@ -27,11 +27,11 @@
 
 #if WINDOWS_PHONE
 
-using System;
-using System.IO;
-
 namespace RestSharp.Compression.ZLib
 {
+    using System;
+    using System.IO;
+
     /// <summary>
     /// Represents a Zlib stream for compression or decompression.
     /// </summary>
@@ -79,7 +79,7 @@ namespace RestSharp.Compression.ZLib
             _baseStream = new ZlibBaseStream(stream, ZlibStreamFlavor.ZLIB, false);
         }
 
-        #region Zlib properties
+#region Zlib properties
 
         /// <summary>
         /// This property sets the flush behavior on the stream.  
@@ -143,9 +143,9 @@ namespace RestSharp.Compression.ZLib
             get { return this._baseStream._z.TotalBytesOut; }
         }
 
-        #endregion
+#endregion
 
-        #region System.IO.Stream methods
+#region System.IO.Stream methods
 
         /// <summary>
         /// Dispose the stream.  
@@ -338,7 +338,7 @@ namespace RestSharp.Compression.ZLib
             _baseStream.Write(buffer, offset, count);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Uncompress a byte array into a single string.

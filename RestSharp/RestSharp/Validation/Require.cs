@@ -14,10 +14,10 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-
 namespace RestSharp.Validation
 {
+    using System;
+
     /// <summary>
     /// Helper methods for validating required values
     /// </summary>

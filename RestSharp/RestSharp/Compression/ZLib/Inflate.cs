@@ -63,16 +63,17 @@
 
 #if WINDOWS_PHONE
 
-using System;
 namespace RestSharp.Compression.ZLib
 {
+    using System;
+
     sealed internal class InflateBlocks
     {
         private const int MANY = 1440;
 
         // And'ing with mask[n] masks the lower n bits
         //UPGRADE_NOTE: Final was removed from the declaration of 'inflate_mask'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        private static readonly int[] inflate_mask = new int[] { 0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f, 0x000000ff, 0x000001ff, 0x000003ff, 0x000007ff, 0x00000fff, 0x00001fff, 0x00003fff, 0x00007fff, 0x0000ffff };
+        private static readonly int[] inflate_mask = { 0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f, 0x000000ff, 0x000001ff, 0x000003ff, 0x000007ff, 0x00000fff, 0x00001fff, 0x00003fff, 0x00007fff, 0x0000ffff };
 
         // Table for deflate from PKZIP's appnote.txt.
         //UPGRADE_NOTE: Final was removed from the declaration of 'border'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -1740,7 +1741,7 @@ namespace RestSharp.Compression.ZLib
 
                     case BAD:
                         throw new ZlibException(String.Format("Bad state ({0})", _codec.Message));
-                        //return ZlibConstants.Z_DATA_ERROR;
+                    //return ZlibConstants.Z_DATA_ERROR;
 
                     default:
                         throw new ZlibException("Stream error.");

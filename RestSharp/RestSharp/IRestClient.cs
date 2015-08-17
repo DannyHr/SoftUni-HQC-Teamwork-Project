@@ -21,6 +21,7 @@ namespace RestSharp
     using System.Net;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
+    using RestSharp.Authenticators;
     using RestSharp.Deserializers;
 
 #if NET4 || MONODROID || MONOTOUCH || WP8

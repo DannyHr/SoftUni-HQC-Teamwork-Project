@@ -62,10 +62,10 @@
 
 #if WINDOWS_PHONE
 
-using System;
-
 namespace RestSharp.Compression.ZLib
-{
+{   
+    using System;
+
     /// <summary>
     /// A bunch of constants used in the Zlib interface.
     /// </summary>

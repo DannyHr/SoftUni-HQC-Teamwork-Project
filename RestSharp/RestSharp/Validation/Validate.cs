@@ -14,10 +14,10 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-
 namespace RestSharp.Validation
 {
+    using System;
+
     /// <summary>
     /// Helper methods for validating values
     /// </summary>
@@ -45,7 +45,9 @@ namespace RestSharp.Validation
         public static void IsValidLength(string value, int maxSize)
         {
             if (value == null)
+            {
                 return;
+            }
 
             if (value.Length > maxSize)
             {

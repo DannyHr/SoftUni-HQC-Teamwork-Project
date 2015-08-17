@@ -1,10 +1,10 @@
 ﻿#if WINDOWS_PHONE
 
-using System;
-using System.Net;
-
 namespace RestSharp.Compression.ZLib
 {
+    using System;
+    using System.Net;
+
     /// <summary>
     /// Describes how to flush the current deflate operation. 
     /// </summary>

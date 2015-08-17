@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Text;
-using System.Xml.Serialization;
-
-namespace RestSharp.Serializers
+﻿namespace RestSharp.Serializers
 {
+    using System.IO;
+    using System.Text;
+    using System.Xml.Serialization;
+
     /// <summary>
     /// Wrapper for System.Xml.Serialization.XmlSerializer.
     /// </summary>
@@ -14,8 +14,8 @@ namespace RestSharp.Serializers
         /// </summary>
         public DotNetXmlSerializer()
         {
-            ContentType = "application/xml";
-            Encoding = Encoding.UTF8;
+            this.ContentType = "application/xml";
+            this.Encoding = Encoding.UTF8;
         }
 
         /// <summary>
@@ -25,27 +25,9 @@ namespace RestSharp.Serializers
         public DotNetXmlSerializer(string @namespace)
             : this()
         {
-            Namespace = @namespace;
+            this.Namespace = @namespace;
         }
 
-        /// <summary>
-        /// Serialize the object as XML
-        /// </summary>
-        /// <param name="obj">Object to serialize</param>
-        /// <returns>XML as string</returns>
-        public string Serialize(object obj)
-        {
-            var ns = new XmlSerializerNamespaces();
-
-            ns.Add(string.Empty, Namespace);
-
-            var serializer = new System.Xml.Serialization.XmlSerializer(obj.GetType());
-            var writer = new EncodingStringWriter(Encoding);
-
-            serializer.Serialize(writer, obj, ns);
-
-            return writer.ToString();
-        }
 
         /// <summary>
         /// Name of the root element to use when serializing
@@ -73,6 +55,25 @@ namespace RestSharp.Serializers
         public Encoding Encoding { get; set; }
 
         /// <summary>
+        /// Serialize the object as XML
+        /// </summary>
+        /// <param name="obj">Object to serialize</param>
+        /// <returns>XML as string</returns>
+        public string Serialize(object obj)
+        {
+            var ns = new XmlSerializerNamespaces();
+
+            ns.Add(string.Empty, this.Namespace);
+
+            var serializer = new System.Xml.Serialization.XmlSerializer(obj.GetType());
+            var writer = new EncodingStringWriter(this.Encoding);
+
+            serializer.Serialize(writer, obj, ns);
+
+            return writer.ToString();
+        }
+
+        /// <summary>
         /// Need to subclass StringWriter in order to override Encoding
         /// </summary>
         private class EncodingStringWriter : StringWriter
@@ -86,7 +87,10 @@ namespace RestSharp.Serializers
 
             public override Encoding Encoding
             {
-                get { return encoding; }
+                get
+                {
+                    return this.encoding;
+                }
             }
         }
     }

@@ -128,12 +128,12 @@ namespace RestSharp
         /// Container of all HTTP parameters to be passed with the request. 
         /// See AddParameter() for explanation of the types of parameters that can be passed
         /// </summary>
-        public List<Parameter> Parameters { get; set; } //added set
+        public List<Parameter> Parameters { get; private set; }
 
         /// <summary>
         /// Container of all the files to be uploaded with the request.
         /// </summary>
-        public List<FileParameter> Files { get; set; } // added set
+        public List<FileParameter> Files { get; private set; }
 
         /// <summary>
         /// Determines what HTTP method to use for this request. Supported methods: GET, POST, PUT, DELETE, HEAD, OPTIONS

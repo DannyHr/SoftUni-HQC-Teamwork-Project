@@ -1,10 +1,10 @@
-#if !Smartphone
-using System;
-using System.Diagnostics;
-#endif
-
 namespace RestSharp.Authenticators.OAuth
 {
+#if !Smartphone
+    using System;
+    using System.Diagnostics;
+#endif
+
 #if !Smartphone && !PocketPC
     [DebuggerDisplay("{Name}:{Value}")]
 #endif
@@ -14,6 +14,8 @@ namespace RestSharp.Authenticators.OAuth
     internal class WebParameter : WebPair
     {
         public WebParameter(string name, string value)
-            : base(name, value) { }
+            : base(name, value)
+        {
+        }
     }
 }

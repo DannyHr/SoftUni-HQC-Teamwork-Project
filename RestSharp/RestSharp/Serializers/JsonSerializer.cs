@@ -1,5 +1,4 @@
-﻿
-namespace RestSharp.Serializers
+﻿namespace RestSharp.Serializers
 {
     /// <summary>
     /// Default JSON serializer for request bodies
@@ -12,17 +11,7 @@ namespace RestSharp.Serializers
         /// </summary>
         public JsonSerializer()
         {
-            ContentType = "application/json";
-        }
-
-        /// <summary>
-        /// Serialize the object as JSON
-        /// </summary>
-        /// <param name="obj">Object to serialize</param>
-        /// <returns>JSON as String</returns>
-        public string Serialize(object obj)
-        {
-            return SimpleJson.SerializeObject(obj);
+            this.ContentType = "application/json";
         }
 
         /// <summary>
@@ -44,5 +33,15 @@ namespace RestSharp.Serializers
         /// Content type for serialized content
         /// </summary>
         public string ContentType { get; set; }
+
+        /// <summary>
+        /// Serialize the object as JSON
+        /// </summary>
+        /// <param name="obj">Object to serialize</param>
+        /// <returns>JSON as String</returns>
+        public string Serialize(object obj)
+        {
+            return SimpleJson.SerializeObject(obj);
+        }
     }
 }

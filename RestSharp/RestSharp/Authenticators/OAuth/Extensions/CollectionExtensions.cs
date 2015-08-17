@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-
 namespace RestSharp.Authenticators.OAuth.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Text;
+
     internal static class CollectionExtensions
     {
         public static IEnumerable<T> AsEnumerable<T>(this T item)
@@ -27,9 +27,9 @@ namespace RestSharp.Authenticators.OAuth.Extensions
             yield return item;
         }
 
-        public static K TryWithKey<T, K>(this IDictionary<T, K> dictionary, T key)
+        public static TK TryWithKey<T, TK>(this IDictionary<T, TK> dictionary, T key)
         {
-            return dictionary.ContainsKey(key) ? dictionary[key] : default(K);
+            return dictionary.ContainsKey(key) ? dictionary[key] : default(TK);
         }
 
         public static IEnumerable<T> ToEnumerable<T>(this object[] items) where T : class
@@ -77,8 +77,10 @@ namespace RestSharp.Authenticators.OAuth.Extensions
                 {
                     continue;
                 }
+
                 sb.Append("&");
             }
+
             return sb.ToString();
         }
 

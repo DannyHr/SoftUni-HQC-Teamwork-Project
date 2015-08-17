@@ -1,9 +1,9 @@
-using System;
-using System.Security.Cryptography;
-using System.Text;
-
 namespace RestSharp.Authenticators.OAuth.Extensions
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
+
     internal static class OAuthExtensions
     {
         public static string ToRequestValue(this OAuthSignatureMethod signatureMethod)
@@ -19,8 +19,10 @@ namespace RestSharp.Authenticators.OAuth.Extensions
             {
                 case "HMAC-SHA1":
                     return OAuthSignatureMethod.HmacSha1;
+
                 case "RSA-SHA1":
                     return OAuthSignatureMethod.RsaSha1;
+
                 default:
                     return OAuthSignatureMethod.PlainText;
             }

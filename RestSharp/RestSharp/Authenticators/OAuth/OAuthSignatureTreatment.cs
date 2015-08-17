@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace RestSharp.Authenticators.OAuth
+﻿namespace RestSharp.Authenticators.OAuth
 {
+    using System;
+
 #if !SILVERLIGHT && !WINDOWS_PHONE && !PocketPC
     [Serializable]
 #endif

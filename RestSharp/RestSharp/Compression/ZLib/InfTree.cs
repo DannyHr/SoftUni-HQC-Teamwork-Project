@@ -61,10 +61,9 @@
 
 #if WINDOWS_PHONE
 
-using System;
-
 namespace RestSharp.Compression.ZLib
 {
+    using System;
 
     sealed internal class InfTree
     {

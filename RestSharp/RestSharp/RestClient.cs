@@ -24,6 +24,7 @@ namespace RestSharp
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Text.RegularExpressions;
+    using RestSharp.Authenticators;
     using RestSharp.Deserializers;
     using RestSharp.Extensions;
 
@@ -94,7 +95,7 @@ namespace RestSharp
         /// <param name="baseUrl"></param>
         public RestClient(string baseUrl) : this()
         {
-            if (String.IsNullOrEmpty(baseUrl))
+            if (string.IsNullOrEmpty(baseUrl))
             {
                 throw new ArgumentNullException("baseUrl");
             }
@@ -191,9 +192,9 @@ namespace RestSharp
         /// Parameters included with every request made with this instance of RestClient
         /// If specified in both client and request, the request wins
         /// </summary>
-        public IList<Parameter> DefaultParameters { get; set; } //added set
+        public IList<Parameter> DefaultParameters { get; private set; } 
 
-        private IDictionary<string, IDeserializer> ContentHandlers { get; set; } //added set
+        private IDictionary<string, IDeserializer> ContentHandlers { get; set; }
 
         private IList<string> AcceptTypes { get; set; }
 
@@ -665,5 +666,3 @@ namespace RestSharp
 // ctors placed after fields
 // props placed agter ctors
 // public, private static, private methods placed in correct order
-
-//added setter in some properties in order to build the solution

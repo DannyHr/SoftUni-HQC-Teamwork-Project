@@ -63,6 +63,7 @@ namespace RestSharp
                 return this.content ?? (this.content = this.RawBytes.AsString());
             }
         }
+
         /// <summary>
         /// HTTP response status code
         /// </summary>
@@ -97,8 +98,7 @@ namespace RestSharp
         /// Cookies returned by server with the response
         /// </summary>
         public IList<HttpCookie> Cookies { get; private set; }
-
-
+        
         /// <summary>
         /// Status of the request. Will return Error for transport errors.
         /// HTTP errors will still return ResponseStatus.Completed, check StatusCode instead
@@ -109,6 +109,7 @@ namespace RestSharp
             {
                 return this.responseStatus;
             }
+
             set
             {
                 this.responseStatus = value;

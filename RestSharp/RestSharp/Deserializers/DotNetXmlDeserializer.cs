@@ -14,11 +14,11 @@
 //   limitations under the License. 
 #endregion
 
-using System.IO;
-using System.Text;
-
 namespace RestSharp.Deserializers
 {
+    using System.IO;
+    using System.Text;
+    
     /// <summary>
     /// Wrapper for System.Xml.Serialization.XmlSerializer.
     /// </summary>

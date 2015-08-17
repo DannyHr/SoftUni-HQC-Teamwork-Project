@@ -63,7 +63,7 @@ namespace RestSharp.Extensions.MonoHttp
 #endif
         private static readonly HttpEncoder CurrentEncoder;
 
-        static IDictionary<string, char> Entities
+        public static IDictionary<string, char> Entities
         {
             get
             {
@@ -127,18 +127,26 @@ namespace RestSharp.Extensions.MonoHttp
 #endif
  void HeaderNameValueEncode(string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
         {
-            if (String.IsNullOrEmpty(headerName))
+            if (string.IsNullOrEmpty(headerName))
+            {
                 encodedHeaderName = headerName;
+            }
             else
+            {
                 encodedHeaderName = EncodeHeaderString(headerName);
+            }
 
-            if (String.IsNullOrEmpty(headerValue))
+            if (string.IsNullOrEmpty(headerValue))
+            {
                 encodedHeaderValue = headerValue;
+            }
             else
+            {
                 encodedHeaderValue = EncodeHeaderString(headerValue);
+            }
         }
 
-        static void StringBuilderAppend(string s, ref StringBuilder sb)
+        internal static void StringBuilderAppend(string s, ref StringBuilder sb)
         {
             if (sb == null)
                 sb = new StringBuilder(s);
@@ -146,7 +154,7 @@ namespace RestSharp.Extensions.MonoHttp
                 sb.Append(s);
         }
 
-        static string EncodeHeaderString(string input)
+        internal static string EncodeHeaderString(string input)
         {
             StringBuilder sb = null;
             char ch;
@@ -156,11 +164,15 @@ namespace RestSharp.Extensions.MonoHttp
                 ch = input[i];
 
                 if ((ch < 32 && ch != 9) || ch == 127)
-                    StringBuilderAppend(String.Format("%{0:x2}", (int)ch), ref sb);
+                {
+                    StringBuilderAppend(string.Format("%{0:x2}", (int)ch), ref sb);
+                }
             }
 
             if (sb != null)
+            {
                 return sb.ToString();
+            }
 
             return input;
         }
@@ -228,14 +240,18 @@ namespace RestSharp.Extensions.MonoHttp
 #endif
  string UrlPathEncode(string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             MemoryStream result = new MemoryStream();
             int length = value.Length;
 
             for (int i = 0; i < length; i++)
+            {
                 UrlPathEncodeChar(value[i], result);
+            }
 
             byte[] bytes = result.ToArray();
             return Encoding.ASCII.GetString(bytes, 0, bytes.Length);
@@ -244,24 +260,32 @@ namespace RestSharp.Extensions.MonoHttp
         internal static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
         {
             if (bytes == null)
+            {
                 throw new ArgumentNullException("bytes");
-
+            }
+                
             int blen = bytes.Length;
 
             if (blen == 0)
                 return new byte[0];
 
             if (offset < 0 || offset >= blen)
+            {
                 throw new ArgumentOutOfRangeException("offset");
+            }
 
             if (count < 0 || count > blen - offset)
+            {
                 throw new ArgumentOutOfRangeException("count");
+            }
 
             MemoryStream result = new MemoryStream(count);
             int end = offset + count;
 
             for (int i = offset; i < end; i++)
+            {
                 UrlEncodeChar((char)bytes[i], result, false);
+            }
 
             return result.ToArray();
         }
@@ -269,10 +293,14 @@ namespace RestSharp.Extensions.MonoHttp
         internal static string HtmlEncode(string s)
         {
             if (s == null)
+            {
                 return null;
+            }
 
             if (s.Length == 0)
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
             bool needEncode = false;
 
@@ -291,7 +319,9 @@ namespace RestSharp.Extensions.MonoHttp
             }
 
             if (!needEncode)
+            {
                 return s;
+            }
 
             StringBuilder output = new StringBuilder();
             char ch;
@@ -341,7 +371,10 @@ namespace RestSharp.Extensions.MonoHttp
                             output.Append(";");
                         }
                         else
+                        {
                             output.Append(ch);
+                        }
+
                         break;
                 }
             }
@@ -357,10 +390,14 @@ namespace RestSharp.Extensions.MonoHttp
 #else
 
             if (s == null)
+            {
                 return null;
+            }
 
             if (s.Length == 0)
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 #endif
 
             bool needEncode = false;
@@ -380,7 +417,9 @@ namespace RestSharp.Extensions.MonoHttp
             }
 
             if (!needEncode)
+            {
                 return s;
+            }
 
             StringBuilder output = new StringBuilder();
             int len = s.Length;
@@ -417,13 +456,19 @@ namespace RestSharp.Extensions.MonoHttp
         internal static string HtmlDecode(string s)
         {
             if (s == null)
+            {
                 return null;
+            }
 
             if (s.Length == 0)
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
             if (s.IndexOf('&') == -1)
+            {
                 return s;
+            }
 #if NET_4_0
             StringBuilder rawEntity = new StringBuilder ();
 #endif
@@ -437,8 +482,8 @@ namespace RestSharp.Extensions.MonoHttp
             // 3 -> '#' found after '&' and getting numbers
             int state = 0;
             int number = 0;
-            bool is_hex_value = false;
-            bool have_trailing_digits = false;
+            bool isHexValue = false;
+            bool haveTrailingDigits = false;
 
             for (int i = 0; i < len; i++)
             {
@@ -466,10 +511,10 @@ namespace RestSharp.Extensions.MonoHttp
                 {
                     state = 1;
 
-                    if (have_trailing_digits)
+                    if (haveTrailingDigits)
                     {
                         entity.Append(number.ToString(Helpers.InvariantCulture));
-                        have_trailing_digits = false;
+                        haveTrailingDigits = false;
                     }
 
                     output.Append(entity.ToString());
@@ -491,7 +536,7 @@ namespace RestSharp.Extensions.MonoHttp
                     else
                     {
                         number = 0;
-                        is_hex_value = false;
+                        isHexValue = false;
                         if (c != '#')
                         {
                             state = 2;
@@ -516,7 +561,9 @@ namespace RestSharp.Extensions.MonoHttp
                         string key = entity.ToString();
 
                         if (key.Length > 1 && Entities.ContainsKey(key.Substring(1, key.Length - 2)))
+                        {
                             key = Entities[key.Substring(1, key.Length - 2)].ToString();
+                        }
 
                         output.Append(key);
                         state = 0;
@@ -551,27 +598,27 @@ namespace RestSharp.Extensions.MonoHttp
 #if NET_4_0
                         rawEntity.Length = 0;
 #endif
-                        have_trailing_digits = false;
+                        haveTrailingDigits = false;
                     }
-                    else if (is_hex_value && Uri.IsHexDigit(c))
+                    else if (isHexValue && Uri.IsHexDigit(c))
                     {
                         number = number * 16 + Uri.FromHex(c);
-                        have_trailing_digits = true;
+                        haveTrailingDigits = true;
 #if NET_4_0
                         rawEntity.Append (c);
 #endif
                     }
-                    else if (Char.IsDigit(c))
+                    else if (char.IsDigit(c))
                     {
                         number = number * 10 + ((int)c - '0');
-                        have_trailing_digits = true;
+                        haveTrailingDigits = true;
 #if NET_4_0
                         rawEntity.Append (c);
 #endif
                     }
                     else if (number == 0 && (c == 'x' || c == 'X'))
                     {
-                        is_hex_value = true;
+                        isHexValue = true;
 #if NET_4_0
                         rawEntity.Append (c);
 #endif
@@ -580,10 +627,10 @@ namespace RestSharp.Extensions.MonoHttp
                     {
                         state = 2;
 
-                        if (have_trailing_digits)
+                        if (haveTrailingDigits)
                         {
                             entity.Append(number.ToString(Helpers.InvariantCulture));
-                            have_trailing_digits = false;
+                            haveTrailingDigits = false;
                         }
 
                         entity.Append(c);
@@ -595,7 +642,7 @@ namespace RestSharp.Extensions.MonoHttp
             {
                 output.Append(entity.ToString());
             }
-            else if (have_trailing_digits)
+            else if (haveTrailingDigits)
             {
                 output.Append(number.ToString(Helpers.InvariantCulture));
             }
@@ -648,10 +695,7 @@ namespace RestSharp.Extensions.MonoHttp
                 return;
             }
 
-            if ((c < '0') ||
-                (c < 'A' && c > '9') ||
-                (c > 'Z' && c < 'a') ||
-                (c > 'z'))
+            if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z'))
             {
                 if (isUnicode && c > 127)
                 {
@@ -661,7 +705,9 @@ namespace RestSharp.Extensions.MonoHttp
                     result.WriteByte((byte)'0');
                 }
                 else
+                {
                     result.WriteByte((byte)'%');
+                }
 
                 int idx = ((int)c) >> 4;
 
@@ -670,7 +716,9 @@ namespace RestSharp.Extensions.MonoHttp
                 result.WriteByte((byte)HexChars[idx]);
             }
             else
+            {
                 result.WriteByte((byte)c);
+            }
         }
 
         internal static void UrlPathEncodeChar(char c, Stream result)
@@ -700,7 +748,7 @@ namespace RestSharp.Extensions.MonoHttp
                 result.WriteByte((byte)c);
         }
 
-        static void InitEntities()
+        internal static void InitEntities()
         {
             // Build the hash table of HTML entity references.  This list comes
             // from the HTML 4.01 W3C recommendation.
@@ -967,4 +1015,3 @@ namespace RestSharp.Extensions.MonoHttp
 // done some refactoring according to styleCop hints
 // moved the directives in the namespace
 // changed the namespace path in order to be correct
-// to be continued...  

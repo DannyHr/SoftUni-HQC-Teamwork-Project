@@ -50,19 +50,23 @@ namespace RestSharp.Extensions
         /// </summary>
         public static string UrlEncode(this string input)
         {
-            const int maxLength = 32766;
+            const int MaxLength = 32766;
             if (input == null)
+            {
                 throw new ArgumentNullException("input");
+            }
 
-            if (input.Length <= maxLength)
+            if (input.Length <= MaxLength)
+            {
                 return Uri.EscapeDataString(input);
+            }
 
             StringBuilder sb = new StringBuilder(input.Length * 2);
             int index = 0;
 
             while (index < input.Length)
             {
-                int length = Math.Min(input.Length - index, maxLength);
+                int length = Math.Min(input.Length - index, MaxLength);
                 string subString = input.Substring(index, length);
 
                 sb.Append(Uri.EscapeDataString(subString));
@@ -108,7 +112,7 @@ namespace RestSharp.Extensions
         /// <returns>string</returns>
         public static string RemoveUnderscoresAndDashes(this string input)
         {
-            return input.Replace("_", "").Replace("-", ""); // avoiding regex
+            return input.Replace("_", string.Empty).Replace("-", string.Empty); // avoiding regex
         }
 
         /// <summary>
@@ -119,15 +123,15 @@ namespace RestSharp.Extensions
         /// <returns>DateTime</returns>
         public static DateTime ParseJsonDate(this string input, CultureInfo culture)
         {
-            input = input.Replace("\n", "");
-            input = input.Replace("\r", "");
+            input = input.Replace("\n", string.Empty);
+            input = input.Replace("\r", string.Empty);
             input = input.RemoveSurroundingQuotes();
 
             long? unix = null;
 
             try
             {
-                unix = Int64.Parse(input);
+                unix = long.Parse(input);
             }
             catch (Exception) { };
 
@@ -144,7 +148,7 @@ namespace RestSharp.Extensions
 
             if (input.Contains("new Date("))
             {
-                input = input.Replace(" ", "");
+                input = input.Replace(" ", string.Empty);
                 // because all whitespace is removed, match against newDate( instead of new Date(
                 return ExtractDate(input, @"newDate\((-?\d+)*\)", culture);
             }
@@ -278,8 +282,10 @@ namespace RestSharp.Extensions
         /// <returns></returns>
         public static string ToPascalCase(this string text, bool removeUnderscores, CultureInfo culture)
         {
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
+            {
                 return text;
+            }
 
             text = text.Replace("_", " ");
 
@@ -296,18 +302,20 @@ namespace RestSharp.Extensions
                         string restOfWord = word.Substring(1);
 
                         if (restOfWord.IsUpperCase())
+                        {
                             restOfWord = restOfWord.ToLower(culture);
+                        }
 
                         char firstChar = char.ToUpper(word[0], culture);
 
-                        words[i] = String.Concat(firstChar, restOfWord);
+                        words[i] = string.Concat(firstChar, restOfWord);
                     }
                 }
 
-                return String.Join(joinString, words);
+                return string.Join(joinString, words);
             }
 
-            return String.Concat(words[0].Substring(0, 1).ToUpper(culture), words[0].Substring(1));
+            return string.Concat(words[0].Substring(0, 1).ToUpper(culture), words[0].Substring(1));
         }
 
         /// <summary>
@@ -328,7 +336,7 @@ namespace RestSharp.Extensions
         /// <returns>string</returns>
         public static string MakeInitialLowerCase(this string word)
         {
-            return String.Concat(word.Substring(0, 1).ToLower(), word.Substring(1));
+            return string.Concat(word.Substring(0, 1).ToLower(), word.Substring(1));
         }
 
         /// <summary>
@@ -349,12 +357,12 @@ namespace RestSharp.Extensions
         public static string AddUnderscores(this string pascalCasedWord)
         {
             return Regex.Replace(
-                Regex.Replace(
+                    Regex.Replace(
                     Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"),
                     @"([a-z\d])([A-Z])",
                     "$1_$2"),
-                @"[-\s]",
-                "_");
+                    @"[-\s]",
+                    "_");
         }
 
         /// <summary>
@@ -391,12 +399,12 @@ namespace RestSharp.Extensions
         public static string AddSpaces(this string pascalCasedWord)
         {
             return Regex.Replace(
-                Regex.Replace(
+                    Regex.Replace(
                     Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1 $2"),
                     @"([a-z\d])([A-Z])",
                     "$1 $2"),
-                @"[-\s]",
-                " ");
+                    @"[-\s]",
+                    " ");
         }
 
         /// <summary>
@@ -407,8 +415,10 @@ namespace RestSharp.Extensions
         /// <returns>IEnumerable&lt;string&gt;</returns>
         public static IEnumerable<string> GetNameVariants(this string name, CultureInfo culture)
         {
-            if (String.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
+            {
                 yield break;
+            }
 
             yield return name;
 
@@ -444,3 +454,5 @@ namespace RestSharp.Extensions
         }
     }
 }
+// done some refactoring accoridng ot styleCop hints
+// please check it again

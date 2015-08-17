@@ -46,14 +46,16 @@ namespace RestSharp.Extensions
     //#endif
     public sealed class HttpUtility
     {
-        sealed class HttpQSCollection : NameValueCollection
+        private sealed class HttpQsCollection : NameValueCollection
         {
             public override string ToString()
             {
-                int count = Count;
+                int count = this.Count;
 
                 if (count == 0)
-                    return "";
+                {
+                    return string.Empty;
+                }
 
                 StringBuilder sb = new StringBuilder();
                 string[] keys = AllKeys;
@@ -64,7 +66,9 @@ namespace RestSharp.Extensions
                 }
 
                 if (sb.Length > 0)
+                {
                     sb.Length--;
+                }
 
                 return sb.ToString();
             }
@@ -755,7 +759,7 @@ namespace RestSharp.Extensions
             if (query[0] == '?')
                 query = query.Substring(1);
 
-            NameValueCollection result = new HttpQSCollection();
+            NameValueCollection result = new HttpQsCollection();
 
             ParseQueryString(query, encoding, result);
 
@@ -832,3 +836,5 @@ namespace RestSharp.Extensions
         #endregion // Methods
     }
 }
+
+// done some refactoring

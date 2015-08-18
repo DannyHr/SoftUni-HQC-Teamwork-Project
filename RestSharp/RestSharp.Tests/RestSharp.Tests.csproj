@@ -91,6 +91,7 @@
     <Compile Include="SampleClasses\EnumTest.cs" />
     <Compile Include="SampleClasses\Goodreads.cs" />
     <Compile Include="SampleClasses\GoogleWeatherWithAttributes.cs" />
+    <Compile Include="SampleClasses\Payment.cs" />
     <Compile Include="SampleClasses\Struct.cs" />
     <Compile Include="XmlAttributeDeserializerTests.cs" />
     <Compile Include="CultureChange.cs" />

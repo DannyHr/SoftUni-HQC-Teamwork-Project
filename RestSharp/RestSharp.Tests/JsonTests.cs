@@ -401,7 +401,7 @@ namespace RestSharp.Tests
 
         [Fact]
         public void Can_Deserialize_Int_to_Bool() // implemented
-        { 
+        {
             JsonObject jsonData = new JsonObject();
 
             jsonData["IsCool"] = 1;
@@ -455,7 +455,26 @@ namespace RestSharp.Tests
         [Fact]
         public void Can_Deserialize_Names_With_Underscore_Prefix()
         {
-            // TODO: Implement me
+            var doc = this.CreateJsonWithUnderscores();
+            var d = new JsonDeserializer();
+            var response = new RestResponse { Content = doc };
+            var p = d.Deserialize<PersonForJson>(response);
+
+            Assert.Equal("John Sheehan", p.Name);
+            Assert.Equal(28, p.Age);
+            Assert.Equal(long.MaxValue, p.BigNumber);
+            Assert.Equal(99.9999m, p.Percent);
+            Assert.Equal(false, p.IsCool);
+            Assert.Equal(new Uri("http://example.com", UriKind.RelativeOrAbsolute), p.Url);
+            Assert.Equal(new Uri("/foo/bar", UriKind.RelativeOrAbsolute), p.UrlPath);
+            Assert.NotNull(p.Friends);
+            Assert.Equal(10, p.Friends.Count);
+            Assert.NotNull(p.BestFriend);
+            Assert.Equal("The Fonz", p.BestFriend.Name);
+            Assert.Equal(1952, p.BestFriend.Since);
+            Assert.NotEmpty(p.Foes);
+            Assert.Equal("Foe 1", p.Foes["dict1"].Nickname);
+            Assert.Equal("Foe 2", p.Foes["dict2"].Nickname);
         }
 
         [Fact]
@@ -529,9 +548,14 @@ namespace RestSharp.Tests
         }
 
         [Fact]
-        public void Ignore_Protected_Property_That_Exists_In_Data()
+        public void Ignore_Protected_Property_That_Exists_In_Data() // implemented
         {
-            // TODO: Implement me            
+            var doc = CreateJson();
+            var response = new RestResponse { Content = doc };
+            var d = new JsonDeserializer();
+            var p = d.Deserialize<PersonForJson>(response);
+
+            Assert.Null(p.IgnoreProxy);
         }
 
         [Fact]
@@ -630,9 +654,13 @@ namespace RestSharp.Tests
         }
 
         [Fact]
-        public void Can_Deserialize_DateTimeOffset()
+        public void Can_Deserialize_DateTimeOffset() // implemented
         {
-            // TODO: Implement me            
+            var payload = GetPayLoad<DateTimeTestStructure>("datetimes.txt");
+            var offset = new DateTimeOffset(new DateTime(2, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc));
+            payload.DateTimeOffset = offset;
+
+            Assert.Equal(offset, payload.DateTimeOffset);
         }
 
         [Fact]
@@ -725,7 +753,7 @@ namespace RestSharp.Tests
 
         [Fact]
         public void Can_Deserialize_Object_Type_Property_With_Primitive_Value() // implemented
-        {  
+        {
             const int PrimitiveValue = 23;
             var result = new ObjectProperties();
             result.ObjectProperty = PrimitiveValue;
@@ -760,11 +788,7 @@ namespace RestSharp.Tests
             doc["read_only"] = "dummy";
             doc["url"] = "http://example.com";
             doc["url_path"] = "/foo/bar";
-            doc["best_friend"] = new JsonObject
-            {
-                {"name", "The Fonz"},
-                {"since", 1952}
-            };
+            doc["best_friend"] = new JsonObject { { "name", "The Fonz" }, { "since", 1952 } };
 
             var friendsArray = new JsonArray();
 

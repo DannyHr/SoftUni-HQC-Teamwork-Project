@@ -5,23 +5,23 @@ namespace RestSharp.Tests.SampleClasses
 {
     public class VenueSearch
     {
-        public string total_items { get; set; }
+        public string TotalItems { get; set; }
 
-        public string page_size { get; set; }
+        public string PageSize { get; set; }
 
-        public string page_count { get; set; }
+        public string PageCount { get; set; }
 
-        public string page_number { get; set; }
+        public string PageNumber { get; set; }
 
-        public string page_items { get; set; }
+        public string PageItems { get; set; }
 
-        public string first_item { get; set; }
+        public string FirstItem { get; set; }
 
-        public string last_item { get; set; }
+        public string LastItem { get; set; }
 
-        public string search_time { get; set; }
+        public string SearchTime { get; set; }
 
-        public List<Venue> venues { get; set; }
+        public List<Venue> Venues { get; set; }
     }
 
     public class PerformerSearch

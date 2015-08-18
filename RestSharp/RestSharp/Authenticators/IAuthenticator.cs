@@ -16,8 +16,16 @@
 
 namespace RestSharp.Authenticators
 {
+    /// <summary>
+    /// Defines method to authentificate client's password and username.
+    /// </summary>
     public interface IAuthenticator
     {
+       /// <summary>
+        /// Method checks if client's credentials in request are valid
+       /// </summary>
+        /// <param name="client">The client to be authenticated</param>
+        /// <param name="request">The request to be authenticated</param>
         void Authenticate(IRestClient client, IRestRequest request);
     }
 }

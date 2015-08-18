@@ -14,13 +14,13 @@
 //   limitations under the License. 
 #endregion
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-
 namespace RestSharp.Extensions
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// Reflection extensions
     /// </summary>

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Net;
-
-namespace RestSharp.Extensions
+﻿namespace RestSharp.Extensions
 {
+    using System;
+    using System.Net;
+
     public static class ResponseStatusExtensions
     {
         /// <summary>
@@ -16,7 +16,8 @@ namespace RestSharp.Extensions
             switch (responseStatus)
             {
                 case ResponseStatus.None:
-                    return new WebException("The request could not be processed.",
+                    return new WebException(
+                        "The request could not be processed.",
 #if !SILVERLIGHT
                         WebExceptionStatus.ServerProtocolViolation
 #else
@@ -25,7 +26,8 @@ namespace RestSharp.Extensions
                         );
 
                 case ResponseStatus.Error:
-                    return new WebException("An error occurred while processing the request.",
+                    return new WebException(
+                        "An error occurred while processing the request.",
 #if !SILVERLIGHT
                         WebExceptionStatus.ServerProtocolViolation
 #else
@@ -34,7 +36,8 @@ namespace RestSharp.Extensions
                         );
 
                 case ResponseStatus.TimedOut:
-                    return new WebException("The request timed-out.",
+                    return new WebException(
+                        "The request timed-out.",
 #if !SILVERLIGHT
                         WebExceptionStatus.Timeout
 #else
@@ -43,7 +46,8 @@ namespace RestSharp.Extensions
                         );
 
                 case ResponseStatus.Aborted:
-                    return new WebException("The request was aborted.",
+                    return new WebException(
+                        "The request was aborted.",
 #if !SILVERLIGHT
                         WebExceptionStatus.Timeout
 #else

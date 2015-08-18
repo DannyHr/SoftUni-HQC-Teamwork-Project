@@ -1,5 +1,4 @@
-﻿// 
-// System.Web.HttpUtility
+﻿// System.Web.HttpUtility
 //
 // Authors:
 //   Patrik Torstensson (Patrik.Torstensson@labs2.com)
@@ -27,36 +26,35 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Text;
-
-namespace RestSharp.Extensions
+namespace RestSharp.Extensions.MonoHttp
 {
-    using RestSharp.Extensions.MonoHttp;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Text;
 
-    //#if !MONOTOUCH
-    //    // CAS - no InheritanceDemand here as the class is sealed
-    //    [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-    //#endif
+    // #if !MONOTOUCH
+    // // CAS - no InheritanceDemand here as the class is sealed
+    // [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+    // #endif
     public sealed class HttpUtility
     {
-        sealed class HttpQSCollection : NameValueCollection
+        private sealed class HttpQsCollection : NameValueCollection
         {
             public override string ToString()
             {
-                int count = Count;
+                int count = this.Count;
 
                 if (count == 0)
-                    return "";
+                {
+                    return string.Empty;
+                }
 
                 StringBuilder sb = new StringBuilder();
-                string[] keys = AllKeys;
+                string[] keys = this.AllKeys;
 
                 for (int i = 0; i < count; i++)
                 {
@@ -64,17 +62,17 @@ namespace RestSharp.Extensions
                 }
 
                 if (sb.Length > 0)
+                {
                     sb.Length--;
+                }
 
                 return sb.ToString();
             }
         }
 
-        #region Constructors
-
-        public HttpUtility() { }
-
-        #endregion // Constructors
+        public HttpUtility()
+        {
+        }
 
         #region Methods
 
@@ -117,32 +115,42 @@ namespace RestSharp.Extensions
             return UrlDecode(str, Encoding.UTF8);
         }
 
-        static char[] GetChars(MemoryStream b, Encoding e)
+        private static char[] GetChars(MemoryStream b, Encoding e)
         {
             return e.GetChars(b.GetBuffer(), 0, (int)b.Length);
         }
 
-        static void WriteCharBytes(IList buf, char ch, Encoding e)
+        private static void WriteCharBytes(IList buf, char ch, Encoding e)
         {
             if (ch > 255)
             {
                 foreach (byte b in e.GetBytes(new char[] { ch }))
+                {
                     buf.Add(b);
+                }
             }
             else
+            {
                 buf.Add((byte)ch);
+            }
         }
 
         public static string UrlDecode(string s, Encoding e)
         {
             if (null == s)
+            {
                 return null;
+            }
 
             if (s.IndexOf('%') == -1 && s.IndexOf('+') == -1)
+            {
                 return s;
+            }
 
             if (e == null)
+            {
                 e = Encoding.UTF8;
+            }
 
             long len = s.Length;
             var bytes = new List<byte>();
@@ -165,7 +173,9 @@ namespace RestSharp.Extensions
                             i += 5;
                         }
                         else
+                        {
                             WriteCharBytes(bytes, '%', e);
+                        }
                     }
                     else if ((xchar = GetChar(s, i + 1, 2)) != -1)
                     {
@@ -181,9 +191,13 @@ namespace RestSharp.Extensions
                 }
 
                 if (ch == '+')
+                {
                     WriteCharBytes(bytes, ' ', e);
+                }
                 else
+                {
                     WriteCharBytes(bytes, ch, e);
+                }
             }
 
             byte[] buf = bytes.ToArray();
@@ -194,23 +208,31 @@ namespace RestSharp.Extensions
         public static string UrlDecode(byte[] bytes, Encoding e)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             return UrlDecode(bytes, 0, bytes.Length, e);
         }
 
-        static int GetInt(byte b)
+        private static int GetInt(byte b)
         {
             char c = (char)b;
 
             if (c >= '0' && c <= '9')
+            {
                 return c - '0';
+            }
 
             if (c >= 'a' && c <= 'f')
+            {
                 return c - 'a' + 10;
+            }
 
             if (c >= 'A' && c <= 'F')
+            {
                 return c - 'A' + 10;
+            }
 
             return -1;
         }
@@ -225,7 +247,9 @@ namespace RestSharp.Extensions
                 int current = GetInt(bytes[i]);
 
                 if (current == -1)
+                {
                     return -1;
+                }
 
                 value = (value << 4) + current;
             }
@@ -243,12 +267,16 @@ namespace RestSharp.Extensions
                 char c = str[i];
 
                 if (c > 127)
+                {
                     return -1;
+                }
 
                 int current = GetInt((byte)c);
 
                 if (current == -1)
+                {
                     return -1;
+                }
 
                 val = (val << 4) + current;
             }
@@ -259,19 +287,29 @@ namespace RestSharp.Extensions
         public static string UrlDecode(byte[] bytes, int offset, int count, Encoding e)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             if (count == 0)
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
             if (bytes == null)
+            {
                 throw new ArgumentNullException("bytes");
+            }
 
             if (offset < 0 || offset > bytes.Length)
+            {
                 throw new ArgumentOutOfRangeException("offset");
+            }
 
             if (count < 0 || offset + count > bytes.Length)
+            {
                 throw new ArgumentOutOfRangeException("count");
+            }
 
             StringBuilder output = new StringBuilder();
             MemoryStream acc = new MemoryStream();
@@ -339,7 +377,9 @@ namespace RestSharp.Extensions
         public static byte[] UrlDecodeToBytes(byte[] bytes)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             return UrlDecodeToBytes(bytes, 0, bytes.Length);
         }
@@ -352,10 +392,14 @@ namespace RestSharp.Extensions
         public static byte[] UrlDecodeToBytes(string str, Encoding e)
         {
             if (str == null)
+            {
                 return null;
+            }
 
             if (e == null)
+            {
                 throw new ArgumentNullException("e");
+            }
 
             return UrlDecodeToBytes(e.GetBytes(str));
         }
@@ -363,18 +407,26 @@ namespace RestSharp.Extensions
         public static byte[] UrlDecodeToBytes(byte[] bytes, int offset, int count)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             if (count == 0)
+            {
                 return new byte[0];
+            }
 
             int len = bytes.Length;
 
             if (offset < 0 || offset >= len)
+            {
                 throw new ArgumentOutOfRangeException("offset");
+            }
 
             if (count < 0 || offset > len - count)
+            {
                 throw new ArgumentOutOfRangeException("count");
+            }
 
             MemoryStream result = new MemoryStream();
             int end = offset + count;
@@ -412,10 +464,14 @@ namespace RestSharp.Extensions
         public static string UrlEncode(string s, Encoding Enc)
         {
             if (s == null)
+            {
                 return null;
+            }
 
-            if (s == String.Empty)
-                return String.Empty;
+            if (s == string.Empty)
+            {
+                return string.Empty;
+            }
 
             bool needEncode = false;
             int len = s.Length;
@@ -427,7 +483,9 @@ namespace RestSharp.Extensions
                 if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z'))
                 {
                     if (HttpEncoder.NotEncoded(c))
+                    {
                         continue;
+                    }
 
                     needEncode = true;
                     break;
@@ -435,7 +493,9 @@ namespace RestSharp.Extensions
             }
 
             if (!needEncode)
+            {
                 return s;
+            }
 
             // avoided GetByteCount call
             byte[] bytes = new byte[Enc.GetMaxByteCount(s.Length)];
@@ -448,10 +508,14 @@ namespace RestSharp.Extensions
         public static string UrlEncode(byte[] bytes)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             if (bytes.Length == 0)
+            {
                 return String.Empty;
+            }
 
             byte[] r = UrlEncodeToBytes(bytes, 0, bytes.Length);
 
@@ -461,10 +525,14 @@ namespace RestSharp.Extensions
         public static string UrlEncode(byte[] bytes, int offset, int count)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             if (bytes.Length == 0)
+            {
                 return String.Empty;
+            }
 
             byte[] r = UrlEncodeToBytes(bytes, offset, count);
 
@@ -479,10 +547,14 @@ namespace RestSharp.Extensions
         public static byte[] UrlEncodeToBytes(string str, Encoding e)
         {
             if (str == null)
+            {
                 return null;
+            }
 
             if (str.Length == 0)
+            {
                 return new byte[0];
+            }
 
             byte[] bytes = e.GetBytes(str);
 
@@ -492,10 +564,14 @@ namespace RestSharp.Extensions
         public static byte[] UrlEncodeToBytes(byte[] bytes)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
             if (bytes.Length == 0)
+            {
                 return new byte[0];
+            }
 
             return UrlEncodeToBytes(bytes, 0, bytes.Length);
         }
@@ -503,7 +579,9 @@ namespace RestSharp.Extensions
         public static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
         {
             if (bytes == null)
+            {
                 return null;
+            }
 
 #if NET_4_0
             return HttpEncoder.Current.UrlEncode (bytes, offset, count);
@@ -515,7 +593,9 @@ namespace RestSharp.Extensions
         public static string UrlEncodeUnicode(string str)
         {
             if (str == null)
+            {
                 return null;
+            }
 
             byte[] r = UrlEncodeUnicodeToBytes(str);
 
@@ -525,10 +605,14 @@ namespace RestSharp.Extensions
         public static byte[] UrlEncodeUnicodeToBytes(string str)
         {
             if (str == null)
+            {
                 return null;
+            }
 
             if (str.Length == 0)
+            {
                 return new byte[0];
+            }
 
             MemoryStream result = new MemoryStream(str.Length);
 
@@ -619,7 +703,7 @@ namespace RestSharp.Extensions
 #endif
             }
 
-            if (!String.IsNullOrEmpty(s))
+            if (!string.IsNullOrEmpty(s))
             {
 #if NET_4_0
                 HttpEncoder.Current.HtmlEncode (s, output);
@@ -744,18 +828,26 @@ namespace RestSharp.Extensions
         public static NameValueCollection ParseQueryString(string query, Encoding encoding)
         {
             if (query == null)
+            {
                 throw new ArgumentNullException("query");
+            }
 
             if (encoding == null)
+            {
                 throw new ArgumentNullException("encoding");
+            }
 
             if (query.Length == 0 || (query.Length == 1 && query[0] == '?'))
+            {
                 return new NameValueCollection();
+            }
 
             if (query[0] == '?')
+            {
                 query = query.Substring(1);
+            }
 
-            NameValueCollection result = new HttpQSCollection();
+            NameValueCollection result = new HttpQsCollection();
 
             ParseQueryString(query, encoding, result);
 
@@ -765,7 +857,9 @@ namespace RestSharp.Extensions
         internal static void ParseQueryString(string query, Encoding encoding, NameValueCollection result)
         {
             if (query.Length == 0)
+            {
                 return;
+            }
 
             string decoded = HtmlDecode(query);
             int decodedLength = decoded.Length;
@@ -794,11 +888,13 @@ namespace RestSharp.Extensions
                     first = false;
 
                     if (decoded[namePos] == '?')
+                    {
                         namePos++;
+                    }
                 }
 
-                string name,
-                    value;
+                string name;
+                string value;
 
                 if (valuePos == -1)
                 {
@@ -825,10 +921,14 @@ namespace RestSharp.Extensions
                 result.Add(name, value);
 
                 if (namePos == -1)
+                {
                     break;
+                }
             }
         }
 
         #endregion // Methods
     }
 }
+
+// done some refactoring

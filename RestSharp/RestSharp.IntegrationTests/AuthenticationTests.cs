@@ -3,12 +3,13 @@ using System.Diagnostics;
 using System.Net;
 using System.Text;
 using RestSharp.Authenticators;
-using RestSharp.Extensions;
 using RestSharp.IntegrationTests.Helpers;
 using Xunit;
 
 namespace RestSharp.IntegrationTests
 {
+    using RestSharp.Extensions.MonoHttp;
+
     public class AuthenticationTests
     {
         [Fact]

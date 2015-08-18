@@ -21,13 +21,12 @@ namespace RestSharp.Authenticators
     using System.Text;
     using RestSharp.Authenticators.OAuth;
     using RestSharp.Authenticators.OAuth.Extensions;
-
 #if WINDOWS_PHONE
 using System.Net;
 #elif SILVERLIGHT
 using System.Windows.Browser;
 #else
-    using RestSharp.Extensions;
+    using RestSharp.Extensions.MonoHttp;
 #endif
 
     /// <seealso href="http://tools.ietf.org/html/rfc5849"/>
@@ -85,8 +84,8 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForAccessToken(
-            string consumerKey, 
-            string consumerSecret, 
+            string consumerKey,
+            string consumerSecret,
             string token,
             string tokenSecret)
         {
@@ -105,10 +104,10 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForAccessToken(
-            string consumerKey, 
-            string consumerSecret, 
+            string consumerKey,
+            string consumerSecret,
             string token,
-            string tokenSecret, 
+            string tokenSecret,
             string verifier)
         {
             var authenticator = ForAccessToken(consumerKey, consumerSecret, token, tokenSecret);
@@ -117,7 +116,7 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForAccessTokenRefresh(
-            string consumerKey, 
+            string consumerKey,
             string consumerSecret,
             string token,
             string tokenSecret,
@@ -129,11 +128,11 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForAccessTokenRefresh(
-            string consumerKey, 
-            string consumerSecret, 
+            string consumerKey,
+            string consumerSecret,
             string token,
-            string tokenSecret, 
-            string verifier, 
+            string tokenSecret,
+            string verifier,
             string sessionHandle)
         {
             var authenticator = ForAccessToken(consumerKey, consumerSecret, token, tokenSecret);
@@ -143,9 +142,9 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForClientAuthentication(
-            string consumerKey, 
+            string consumerKey,
             string consumerSecret,
-            string username, 
+            string username,
             string password)
         {
             var authenticator = new OAuth1Authenticator
@@ -163,9 +162,9 @@ using System.Windows.Browser;
         }
 
         public static OAuth1Authenticator ForProtectedResource(
-            string consumerKey, 
+            string consumerKey,
             string consumerSecret,
-            string accessToken, 
+            string accessToken,
             string accessTokenSecret)
         {
             var authenticator = new OAuth1Authenticator

@@ -2,9 +2,7 @@
 {
     using System;
     using System.IO;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class FileTests
@@ -14,7 +12,7 @@
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
 
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.FileHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.FileHandler))
             {
                 var client = new RestClient(baseUrl);
                 var request = new RestRequest("Assets/Koala.jpg");

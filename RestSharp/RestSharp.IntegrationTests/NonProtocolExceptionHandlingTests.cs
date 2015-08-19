@@ -3,21 +3,11 @@
     using System;
     using System.Net;
     using System.Threading;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class NonProtocolExceptionHandlingTests
     {
-        /// <summary>
-        /// Simulates a long server process that should result in a client timeout
-        /// </summary>
-        /// <param name="context"></param>
-        public static void Timeout_Handler(HttpListenerContext context)
-        {
-            Thread.Sleep(101000);
-        }
         /// <summary>
         /// Success of this test is based largely on the behavior of your current DNS.
         /// For example, if you're using OpenDNS this will test will fail; ResponseStatus will be Completed.
@@ -32,6 +22,11 @@
             Assert.Equal(ResponseStatus.Error, response.ResponseStatus);
         }
 
+        public class StupidClass
+        {
+            public string Property { get; set; }
+        }
+
         [Fact]
         public void Task_Handles_Non_Existent_Domain()
         {
@@ -42,7 +37,7 @@
                 Method = Method.GET
             };
 
-            var task = client.ExecuteTaskAsync<TemporaryClass>(request);
+            var task = client.ExecuteTaskAsync<StupidClass>(request);
             task.Wait();
 
             var response = task.Result;
@@ -62,7 +57,7 @@
         {
             const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
+            using (SimpleServer.Create(BaseUrl, TimeoutHandler))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
@@ -80,7 +75,7 @@
             const string BaseUrl = "http://localhost:8888/";
             var resetEvent = new ManualResetEvent(false);
 
-            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
+            using (SimpleServer.Create(BaseUrl, TimeoutHandler))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
@@ -109,12 +104,12 @@
         {
             const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
+            using (SimpleServer.Create(BaseUrl, TimeoutHandler))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
 
-                var task =  client.ExecuteTaskAsync(request);
+                var task = client.ExecuteTaskAsync(request);
                 task.Wait();
                 IRestResponse response = task.Result;
                 Assert.NotNull(response);
@@ -136,7 +131,7 @@
         {
             const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
+            using (SimpleServer.Create(BaseUrl, TimeoutHandler))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
@@ -149,10 +144,13 @@
             }
         }
 
-        public class TemporaryClass // TODO: check what is the purpose of this class
+        /// <summary>
+        /// Simulates a long server process that should result in a client timeout
+        /// </summary>
+        /// <param name="context"></param>
+        public static void TimeoutHandler(HttpListenerContext context)
         {
-            public string Property { get; set; }
+            Thread.Sleep(101000);
         }
     }
 }
-// changed some names of the methods

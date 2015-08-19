@@ -2,26 +2,35 @@
 {
     using System;
     using System.Net;
-
     using RestSharp.Deserializers;
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class StructuredSyntaxSuffixTests
     {
-     
+        private class Person
+        {
+            public string Name { get; set; }
+
+            public int Age { get; set; }
+        }
 
         private const string XmlContent = "<Person><name>Bob</name><age>50</age></Person>";
         private const string JsonContent = @"{ ""name"":""Bob"", ""age"":50 }";
 
+        void QueryStringBasedContentAndContentTypeHandler(HttpListenerContext obj)
+        {
+            obj.Response.ContentType = obj.Request.QueryString["ct"];
+            obj.Response.OutputStream.WriteStringUtf8(obj.Request.QueryString["c"]);
+            obj.Response.StatusCode = 200;
+        }
 
         [Fact]
         public void By_default_content_types_with_JSON_structured_syntax_suffix_should_deserialize_as_JSON()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, QueryStringBasedContentAndContentTypeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.QueryStringBasedContentAndContentTypeHandler))
             {
                 var client = new RestClient(baseUrl);
                 
@@ -41,7 +50,7 @@
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, QueryStringBasedContentAndContentTypeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.QueryStringBasedContentAndContentTypeHandler))
             {
                 var client = new RestClient(baseUrl);
 
@@ -57,9 +66,7 @@
         }
 
         [Fact]
-        //Renamed method 
-        public void Content_Type_That_Matches_The_tructured_Syntax_Suffix_Format_Should_Use_Supplied_Deserializer()
-       // Content_type_that_matches_the_structured_syntax_suffix_format_but_was_given_an_explicit_handler_should_use_supplie//d_deserializer()
+        public void Content_type_that_matches_the_structured_syntax_suffix_format_but_was_given_an_explicit_handler_should_use_supplied_deserializer()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
@@ -82,11 +89,11 @@
         }
 
         [Fact]
-        public void Should_Allow_Wildcard_Content_Types_To_Be_Defined()
+        public void Should_allow_wildcard_content_types_to_be_defined()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, QueryStringBasedContentAndContentTypeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.QueryStringBasedContentAndContentTypeHandler))
             {
                 var client = new RestClient(baseUrl);
 
@@ -105,11 +112,11 @@
         }
 
         [Fact]
-        public void By_Default_Application_Json_Content_Type_Should_Deserialize_AsJson()
+        public void By_default_application_json_content_type_should_deserialize_as_JSON()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, QueryStringBasedContentAndContentTypeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.QueryStringBasedContentAndContentTypeHandler))
             {
                 var client = new RestClient(baseUrl);
 
@@ -125,11 +132,11 @@
         }
 
         [Fact]
-        public void By_Default_Text_Xml_Content_Type_Should_Deserialize_As_Xml()
+        public void By_default_text_xml_content_type_should_deserialize_as_XML()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, QueryStringBasedContentAndContentTypeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.QueryStringBasedContentAndContentTypeHandler))
             {
                 var client = new RestClient(baseUrl);
 
@@ -142,13 +149,6 @@
                 Assert.Equal("Bob", response.Data.Name);
                 Assert.Equal(50, response.Data.Age);
             }
-        }
-
-        private void QueryStringBasedContentAndContentTypeHandler(HttpListenerContext obj)
-        {
-            obj.Response.ContentType = obj.Request.QueryString["ct"];
-            obj.Response.OutputStream.WriteStringUtf8(obj.Request.QueryString["c"]);
-            obj.Response.StatusCode = 200;
         }
     }
 }

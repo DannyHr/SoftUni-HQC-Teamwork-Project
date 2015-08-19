@@ -4,81 +4,79 @@
     using System.Linq;
     using System.Net;
     using System.Threading;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class AsyncTests
     {
         [Fact]
-        public void Can_Perform_Get_Async()
+        public void Can_Perform_GET_Async()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
-            const string Val = "Basic async test";
+            const string Value = "Basic async test";
 
             var resetEvent = new ManualResetEvent(false);
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue(Val)))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue(Value)))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
 
                 client.ExecuteAsync(
                     request, 
                     (response, asyncHandle) =>
-                {
-                    Assert.NotNull(response.Content);
-                    Assert.Equal(Val, response.Content);
-                    resetEvent.Set();
-                });
+                        {
+                            Assert.NotNull(response.Content);
+                            Assert.Equal(Value, response.Content);
+                            resetEvent.Set();
+                        });
 
                 resetEvent.WaitOne();
             }
         }
 
         [Fact]
-        public void Can_Perform_Get_Async_Without_Async_Handle()
+        public void Can_Perform_GET_Async_Without_Async_Handle()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
-            const string Val = "Basic async test";
+            const string Value = "Basic async test";
 
             var resetEvent = new ManualResetEvent(false);
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue(Val)))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue(Value)))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
 
                 client.ExecuteAsync(
                     request, 
                     response =>
-                {
-                    Assert.NotNull(response.Content);
-                    Assert.Equal(Val, response.Content);
-                    resetEvent.Set();
-                });
+                        {
+                            Assert.NotNull(response.Content);
+                            Assert.Equal(Value, response.Content);
+                            resetEvent.Set();
+                        });
 
                 resetEvent.WaitOne();
             }
         }
 
         [Fact]
-        public void Can_Perform_Get_Task_Async()
+        public void Can_Perform_GET_TaskAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
-            const string Val = "Basic async task test";
+            const string Value = "Basic async task test";
 
-            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Val)))
+            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Value)))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
                 var task = client.ExecuteTaskAsync(request);
 
                 task.Wait();
 
                 Assert.NotNull(task.Result.Content);
-                Assert.Equal(Val, task.Result.Content);
+                Assert.Equal(Value, task.Result.Content);
             }
         }
 
@@ -107,7 +105,7 @@
         }
 
         [Fact]
-        public void Can_Perform_Execute_Get_Task_Async_With_Response_Type()
+        public void Can_Perform_ExecuteGetTaskAsync_With_Response_Type()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -124,7 +122,7 @@
         }
 
         [Fact]
-        public void Can_Perform_Get_Task_Async_With_Response_Type()
+        public void Can_Perform_GetTaskAsync_With_Response_Type()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -141,12 +139,12 @@
         }
 
         [Fact]
-        public void Can_Cancel_Get_Task_Async()
+        public void Can_Cancel_GET_TaskAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
-            const string Val = "Basic async task test";
+            const string Value = "Basic async task test";
 
-            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Val)))
+            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Value)))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("timeout");
@@ -163,9 +161,9 @@
         public void Can_Cancel_GET_TaskAsync_With_Response_Type()
         {
             const string BaseUrl = "http://localhost:8888/";
-            const string Val = "Basic async task test";
+            const string Value = "Basic async task test";
 
-            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Val)))
+            using (SimpleServer.Create(BaseUrl, Handlers.EchoValue(Value)))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("timeout");
@@ -179,7 +177,7 @@
         }
 
         [Fact]
-        public void Handles_Get_Request_Errors_Task_Async()
+        public void Handles_GET_Request_Errors_TaskAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -200,7 +198,7 @@
         {
             const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(BaseUrl, this.UrlToStatusCodeHandler))
+            using (SimpleServer.Create(BaseUrl, UrlToStatusCodeHandler))
             {
                 var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404");
@@ -213,7 +211,7 @@
         }
 
         [Fact]
-        public void Can_Timeout_Get_Task_Async()
+        public void Can_Timeout_GET_TaskAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -237,11 +235,11 @@
         [Fact]
         public void Can_Timeout_PUT_TaskAsync()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, Handlers.Generic<ResponseHandler>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<ResponseHandler>()))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("timeout", Method.PUT).AddBody("Body_Content");
 
                 // Half the value of ResponseHandler.Timeout
@@ -254,38 +252,38 @@
             }
         }
 
-        public void UrlToStatusCodeHandler(HttpListenerContext obj)
+        void UrlToStatusCodeHandler(HttpListenerContext obj)
         {
             obj.Response.StatusCode = int.Parse(obj.Request.Url.Segments.Last());
         }
 
         public class ResponseHandler
         {
-            private void Error(HttpListenerContext context)
+            void error(HttpListenerContext context)
             {
                 context.Response.StatusCode = 400;
                 context.Response.Headers.Add("Content-Type", "application/xml");
                 context.Response.OutputStream.WriteStringUtf8(
-                @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-                <Response>
-                <Error>
-                <Message>Not found!</Message>
-                </Error>
-                </Response>");
+@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<Response>
+    <Error>
+        <Message>Not found!</Message>
+    </Error>
+</Response>");
             }
 
-           private void Success(HttpListenerContext context)
+            void success(HttpListenerContext context)
             {
                 context.Response.OutputStream.WriteStringUtf8(
-                @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-                <Response>
-                <Success>
-                <Message>Works!</Message>
-                </Success>
-                </Response>");
+@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<Response>
+    <Success>
+        <Message>Works!</Message>
+    </Success>
+</Response>");
             }
 
-            private void Timeout(HttpListenerContext context)
+            void timeout(HttpListenerContext context)
             {
                 Thread.Sleep(1000);
             }
@@ -297,4 +295,3 @@
         }
     }
 }
-// done some terrible renaming of methods in order to be according to the convention :D

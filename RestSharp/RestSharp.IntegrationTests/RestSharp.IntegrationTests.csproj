@@ -85,9 +85,6 @@
     <Compile Include="AsyncTests.cs" />
     <Compile Include="AuthenticationTests.cs" />
     <Compile Include="AsyncRequestBodyTests.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="RequestBodyCapturer.cs" />
-    <Compile Include="NetflixTestClasses.cs" />
     <Compile Include="NonProtocolExceptionHandlingTests.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="FileTests.cs" />

@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-
-namespace RestSharp.IntegrationTests.Helpers
+﻿namespace RestSharp.IntegrationTests.Helpers
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Reflection;
+
     public static class Handlers
     {
         /// <summary>
@@ -33,7 +33,9 @@ namespace RestSharp.IntegrationTests.Helpers
             var pathToFile = Path.Combine(context.Request.Url.Segments.Select(s => s.Replace("/", "")).ToArray());
 
             using (var reader = new StreamReader(pathToFile))
+            {
                 reader.BaseStream.CopyTo(context.Response.OutputStream);
+            }
         }
 
         /// <summary>
@@ -59,8 +61,8 @@ namespace RestSharp.IntegrationTests.Helpers
             return ctx =>
             {
                 var methodName = ctx.Request.Url.Segments.Last();
-                var method = typeof(T).GetMethod(
-                    methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                var method = typeof(T).GetMethod(methodName,
+                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 
                 if (method.IsStatic)
                 {

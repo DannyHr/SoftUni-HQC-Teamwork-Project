@@ -4,9 +4,7 @@
     using System.IO;
     using System.Net;
     using System.Threading;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class MultipartFormDataTests
@@ -36,10 +34,10 @@
                 client.ExecuteAsync(
                     request, 
                     (restResponse, handle) =>
-                {
-                    Console.WriteLine(restResponse.Content);
-                    Assert.Equal(this.expected, restResponse.Content);
-                });
+                        {
+                            Console.WriteLine(restResponse.Content);
+                            Assert.Equal(this.expected, restResponse.Content);
+                        });
             }
         }
 
@@ -62,7 +60,7 @@
         }
 
         [Fact]
-        public void Always_Multipart_Form_Data_With_Parameter_Execute()
+        public void AlwaysMultipartFormData_WithParameter_Execute()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -82,7 +80,7 @@
         }
 
         [Fact]
-        public void Always_Multipart_Form_Data_With_Parameter_Execute_Task_Async()
+        public void AlwaysMultipartFormData_WithParameter_ExecuteTaskAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -107,7 +105,7 @@
         }
 
         [Fact]
-        public void Always_Multipart_Form_Data_With_Parameter_Execute_Async()
+        public void AlwaysMultipartFormData_WithParameter_ExecuteAsync()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -155,4 +153,3 @@
         }
     }
 }
-// done some renaming of methonds and props

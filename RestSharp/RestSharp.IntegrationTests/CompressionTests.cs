@@ -3,9 +3,7 @@
     using System;
     using System.IO.Compression;
     using System.Net;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class CompressionTests
@@ -18,7 +16,7 @@
             using (SimpleServer.Create(baseUrl.AbsoluteUri, GzipEchoValue("This is some gzipped content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some gzipped content", response.Content);
@@ -30,10 +28,10 @@
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
 
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, DeflateEchoValue("This is some deflated content")))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, DeflateEchoValue("This is some deflated content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some deflated content", response.Content);
@@ -45,17 +43,17 @@
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
 
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue("This is some sample content")))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue("This is some sample content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest(string.Empty);
+                var request = new RestRequest("");
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some sample content", response.Content);
             }
         }
 
-        private static Action<HttpListenerContext> GzipEchoValue(string value)
+        static Action<HttpListenerContext> GzipEchoValue(string value)
         {
             return context =>
             {
@@ -68,7 +66,7 @@
             };
         }
 
-        private static Action<HttpListenerContext> DeflateEchoValue(string value)
+        static Action<HttpListenerContext> DeflateEchoValue(string value)
         {
             return context =>
             {

@@ -3,14 +3,12 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Net;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class RequestHeadTests
     {
-        private const string BaseUrl = "http://localhost:8888/";
+        private const string BASE_URL = "http://localhost:8888/";
 
         public RequestHeadTests()
         {
@@ -21,9 +19,10 @@
         public void Does_Not_Pass_Default_Credentials_When_Server_Does_Not_Negotiate()
         {
             const Method HttpMethod = Method.GET;
-            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>()))
+
+            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>()))
             {
-                var client = new RestClient(BaseUrl);
+                var client = new RestClient(BASE_URL);
                 var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     UseDefaultCredentials = true
@@ -35,7 +34,8 @@
 
                 var keys = RequestHeadCapturer.CapturedHeaders.Keys.Cast<string>().ToArray();
 
-                Assert.False(keys.Contains("Authorization"),
+                Assert.False(
+                    keys.Contains("Authorization"),
                     "Authorization header was present in HTTP request from client, even though server does not use the Negotiate scheme");
             }
         }
@@ -45,9 +45,9 @@
         {
             const Method HttpMethod = Method.GET;
 
-            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
+            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
             {
-                var client = new RestClient(BaseUrl);
+                var client = new RestClient(BASE_URL);
                 var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     UseDefaultCredentials = true
@@ -70,9 +70,9 @@
         {
             const Method HttpMethod = Method.GET;
 
-            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
+            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
             {
-                var client = new RestClient(BaseUrl);
+                var client = new RestClient(BASE_URL);
                 var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     // UseDefaultCredentials is currently false by default, but to make the test more robust in case that ever

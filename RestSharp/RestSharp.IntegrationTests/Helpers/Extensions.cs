@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Text;
-
-namespace RestSharp.IntegrationTests.Helpers
+﻿namespace RestSharp.IntegrationTests.Helpers
 {
+    using System.IO;
+    using System.Text;
+
     public static class Extensions
     {
         public static void WriteStringUtf8(this Stream target, string value)

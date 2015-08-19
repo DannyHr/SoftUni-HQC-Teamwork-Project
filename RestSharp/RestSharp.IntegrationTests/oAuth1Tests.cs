@@ -1,16 +1,17 @@
 ﻿namespace RestSharp.IntegrationTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Xml.Serialization;
     using RestSharp.Authenticators;
     using RestSharp.Authenticators.OAuth;
-    using RestSharp.Extensions.MonoHttp;
     using RestSharp.IntegrationTests.Models;
-
     using Xunit;
+    using System.IO;
+    using RestSharp.Extensions.MonoHttp;
 
     public class oAuth1Tests
     {
@@ -31,9 +32,9 @@
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var queryString = HttpUtility.ParseQueryString(response.Content);
-            var oauthToken = queryString["oauth_token"];
-            var oauthTokenSecret = queryString["oauth_token_secret"];
+            var qs = HttpUtility.ParseQueryString(response.Content);
+            var oauthToken = qs["oauth_token"];
+            var oauthTokenSecret = qs["oauth_token_secret"];
 
             Assert.NotNull(oauthToken);
             Assert.NotNull(oauthTokenSecret);
@@ -49,23 +50,26 @@
 
             request = new RestRequest("oauth/access_token", Method.POST);
             client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                ConsumerKey, ConsumerSecret, oauthToken, oauthTokenSecret, verifier);
-            
+                ConsumerKey, ConsumerSecret, oauthToken, oauthTokenSecret, verifier
+            );
             response = client.Execute(request);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            queryString = HttpUtility.ParseQueryString(response.Content);
-            oauthToken = queryString["oauth_token"];
-            oauthTokenSecret = queryString["oauth_token_secret"];
+            qs = HttpUtility.ParseQueryString(response.Content);
+            oauthToken = qs["oauth_token"];
+            oauthTokenSecret = qs["oauth_token_secret"];
 
             Assert.NotNull(oauthToken);
             Assert.NotNull(oauthTokenSecret);
 
             request = new RestRequest("account/verify_credentials.xml");
             client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-                ConsumerKey, ConsumerSecret, oauthToken, oauthTokenSecret);
+                ConsumerKey, 
+                ConsumerSecret, 
+                oauthToken, 
+                oauthTokenSecret);
 
             response = client.Execute(request);
 
@@ -75,8 +79,11 @@
             // request = new RestRequest("statuses/update.json", Method.POST);
             // request.AddParameter("status", "Hello world! " + DateTime.Now.Ticks.ToString());
             // client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-            // consumerKey, consumerSecret, oauth_token, oauth_token_secret);
+            //     consumerKey, consumerSecret, oauth_token, oauth_token_secret
+            // );
+               
             // response = client.Execute(request);
+               
             // Assert.NotNull(response);
             // Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -96,13 +103,14 @@
             //
             // The tokens can be found on the "Keys and Access Tokens" tab on the application
             // management page for your app: https://apps.twitter.com/
+
             Assert.True(File.Exists(@"..\..\config.json"));
 
             var config = SimpleJson.DeserializeObject(File.ReadAllText(@"..\..\config.json")) as JsonObject;
 
             var client = new RestClient("https://api.twitter.com/1.1");
             client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-                (string)config["ConsumerKey"],
+                (string)config["ConsumerKey"], 
                 (string)config["ConsumerSecret"], 
                 (string)config["AccessToken"], 
                 (string)config["AccessSecret"]);
@@ -116,7 +124,30 @@
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        // [Fact]
+        #region Netflix test classes
+
+        [XmlRoot("queue")]
+        private class Queue
+        {
+            [XmlElement("etag")]
+            public string Etag { get; set; }
+
+            public List<QueueItem> Items { get; set; }
+        }
+
+        [XmlRoot("queue_item")]
+        private class QueueItem
+        {
+            [XmlElement("id")]
+            public string ID { get; set; }
+
+            [XmlElement("position")]
+            public int Position { get; set; }
+        }
+
+        #endregion
+
+        //[Fact]
         public void Can_Authenticate_Netflix_With_OAuth()
         {
             const string ConsumerKey = "";
@@ -133,10 +164,10 @@
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var queryString = HttpUtility.ParseQueryString(response.Content);
-            var oauthToken = queryString["oauth_token"];
-            var oauthTokenSecret = queryString["oauth_token_secret"];
-            var applicationName = queryString["application_name"];
+            var qs = HttpUtility.ParseQueryString(response.Content);
+            var oauthToken = qs["oauth_token"];
+            var oauthTokenSecret = qs["oauth_token_secret"];
+            var applicationName = qs["application_name"];
 
             Assert.NotNull(oauthToken);
             Assert.NotNull(oauthTokenSecret);
@@ -156,18 +187,20 @@
 
             request = new RestRequest("oauth/access_token"); // <-- Breakpoint here, login to netflix
             client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                ConsumerKey, ConsumerSecret, oauthToken, oauthTokenSecret);
-           
+                ConsumerKey,
+                ConsumerSecret, 
+                oauthToken, 
+                oauthTokenSecret);
             response = client.Execute(request);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            queryString = HttpUtility.ParseQueryString(response.Content);
-            oauthToken = queryString["oauth_token"];
-            oauthTokenSecret = queryString["oauth_token_secret"];
+            qs = HttpUtility.ParseQueryString(response.Content);
+            oauthToken = qs["oauth_token"];
+            oauthTokenSecret = qs["oauth_token_secret"];
 
-            var userId = queryString["user_id"];
+            var userId = qs["user_id"];
 
             Assert.NotNull(oauthToken);
             Assert.NotNull(oauthTokenSecret);
@@ -242,8 +275,8 @@
 
             Process.Start(redirectUri.ToString());
 
-            var requestUrl = "TODO: put browser URL here";
             // replace this via the debugger with the return url from LinkedIN. Simply copy it from the opened browser
+            var requestUrl = "TODO: put browser URL here";
 
             if (!Debugger.IsAttached)
             {
@@ -331,4 +364,3 @@
         }
     }
 }
-// done some renaming of methods and constants

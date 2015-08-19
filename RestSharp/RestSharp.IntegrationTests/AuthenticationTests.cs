@@ -4,17 +4,15 @@
     using System.Diagnostics;
     using System.Net;
     using System.Text;
-
     using RestSharp.Authenticators;
-    using RestSharp.Extensions.MonoHttp;
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
+    using RestSharp.Extensions.MonoHttp;
 
     public class AuthenticationTests
     {
         [Fact]
-        public void CanAuthenticateWithBasicHttpAuth()
+        public void Can_Authenticate_With_Basic_Http_Auth()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
             using (SimpleServer.Create(baseUrl.AbsoluteUri, UsernamePasswordEchoHandler))
@@ -30,10 +28,16 @@
             }
         }
 
+        private static void UsernamePasswordEchoHandler(HttpListenerContext context)
+        {
+            var header = context.Request.Headers["Authorization"];
+            var parts = Encoding.ASCII.GetString(Convert.FromBase64String(header.Substring("Basic ".Length))).Split(':');
 
+            context.Response.OutputStream.WriteStringUtf8(string.Join("|", parts));
+        }
 
         //[Fact]
-        public void CanAuthenticateWithOAuth()
+        public void Can_Authenticate_With_OAuth()
         {
             var baseUrl = new Uri("https://api.twitter.com");
             var client = new RestClient(baseUrl);
@@ -48,13 +52,13 @@
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var qs = HttpUtility.ParseQueryString(response.Content);
-            var oauth_token = qs["oauth_token"];
-            var oauth_token_secret = qs["oauth_token_secret"];
+            var oauthToken = qs["oauth_token"];
+            var oauthTokenSecret = qs["oauth_token_secret"];
 
-            Assert.NotNull(oauth_token);
-            Assert.NotNull(oauth_token_secret);
+            Assert.NotNull(oauthToken);
+            Assert.NotNull(oauthTokenSecret);
 
-            request = new RestRequest("oauth/authorize?oauth_token=" + oauth_token);
+            request = new RestRequest("oauth/authorize?oauth_token=" + oauthToken);
 
             var url = client.BuildUri(request).ToString();
 
@@ -64,34 +68,27 @@
 
             request = new RestRequest("oauth/access_token");
             client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                "P5QziWtocYmgWAhvlegxw", "jBs07SIxJ0kodeU9QtLEs1W1LRgQb9u5Lc987BA94", oauth_token, oauth_token_secret, verifier);
+                "P5QziWtocYmgWAhvlegxw", "jBs07SIxJ0kodeU9QtLEs1W1LRgQb9u5Lc987BA94", oauthToken, oauthTokenSecret, verifier);
             response = client.Execute(request);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             qs = HttpUtility.ParseQueryString(response.Content);
-            oauth_token = qs["oauth_token"];
-            oauth_token_secret = qs["oauth_token_secret"];
-            Assert.NotNull(oauth_token);
-            Assert.NotNull(oauth_token_secret);
+            oauthToken = qs["oauth_token"];
+            oauthTokenSecret = qs["oauth_token_secret"];
+            Assert.NotNull(oauthToken);
+            Assert.NotNull(oauthTokenSecret);
 
             request = new RestRequest("account/verify_credentials.xml");
             client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-                "P5QziWtocYmgWAhvlegxw", "jBs07SIxJ0kodeU9QtLEs1W1LRgQb9u5Lc987BA94", oauth_token, oauth_token_secret);
+                "P5QziWtocYmgWAhvlegxw", "jBs07SIxJ0kodeU9QtLEs1W1LRgQb9u5Lc987BA94", oauthToken, oauthTokenSecret);
             response = client.Execute(request);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private static void UsernamePasswordEchoHandler(HttpListenerContext context)
-        {
-            var header = context.Request.Headers["Authorization"];
-            var parts = Encoding.ASCII.GetString(Convert.FromBase64String(header.Substring("Basic ".Length))).Split(':');
-
-            context.Response.OutputStream.WriteStringUtf8(string.Join("|", parts));
-        }
         //[Fact]
         //public void Can_Obtain_OAuth_Request_Token()
         //{

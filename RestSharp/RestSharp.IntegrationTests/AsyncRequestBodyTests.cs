@@ -3,9 +3,7 @@
     using System.IO;
     using System.Net;
     using System.Threading;
-
     using RestSharp.IntegrationTests.Helpers;
-
     using Xunit;
 
     public class AsyncRequestBodyTests
@@ -37,7 +35,7 @@
         }
 
         [Fact]
-        public void CanBeAddedToPostRequest()
+        public void Can_Be_Added_To_POST_Request()
         {
             const Method HttpMethod = Method.POST;
 
@@ -61,7 +59,7 @@
         }
 
         [Fact]
-        public void CanBeAddedToPutRequest()
+        public void Can_Be_Added_To_PUT_Request()
         {
             const Method HttpMethod = Method.PUT;
 
@@ -85,7 +83,7 @@
         }
 
         [Fact]
-        public void CanBeAddedToDeleteRequest()
+        public void Can_Be_Added_To_DELETE_Request()
         {
             const Method HttpMethod = Method.DELETE;
 
@@ -109,7 +107,7 @@
         }
 
         [Fact]
-        public void CanNotBeAddedToHeadRequest()
+        public void Can_Not_Be_Added_To_HEAD_Request()
         {
             const Method HttpMethod = Method.HEAD;
 
@@ -133,7 +131,7 @@
         }
 
         [Fact]
-        public void CanBeAddedToOptionsRequest()
+        public void Can_Be_Added_To_OPTIONS_Request()
         {
             const Method HttpMethod = Method.OPTIONS;
 
@@ -157,7 +155,7 @@
         }
 
         [Fact]
-        public void CanBeAddedToPatchRequest()
+        public void Can_Be_Added_To_PATCH_Request()
         {
             const Method HttpMethod = Method.PATCH;
 

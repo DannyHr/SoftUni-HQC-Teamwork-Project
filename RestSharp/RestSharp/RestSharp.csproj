@@ -88,7 +88,7 @@
     <Compile Include="Authenticators\OAuth\Extensions\TimeExtensions.cs" />
     <Compile Include="Authenticators\OAuth\HttpPostParameter.cs" />
     <Compile Include="Authenticators\OAuth\HttpPostParameterType.cs" />
-    <Compile Include="Authenticators\OAuth\OAuth2UriQueryParameterAuthenticator.cs" />
+    <Compile Include="Authenticators\OAuth2UriQueryParameterAuthenticator.cs" />
     <Compile Include="Authenticators\OAuth\OAuthParameterHandling.cs" />
     <Compile Include="Authenticators\OAuth\OAuthSignatureMethod.cs" />
     <Compile Include="Authenticators\OAuth\OAuthSignatureTreatment.cs" />

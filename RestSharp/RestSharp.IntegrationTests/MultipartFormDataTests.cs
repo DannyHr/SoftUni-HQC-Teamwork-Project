@@ -82,11 +82,11 @@
         [Fact]
         public void AlwaysMultipartFormData_WithParameter_ExecuteTaskAsync()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, EchoHandler))
+            using (SimpleServer.Create(BaseUrl, EchoHandler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("?json_route=/posts")
                                   {
                                       AlwaysMultipartFormData = true,
@@ -107,11 +107,11 @@
         [Fact]
         public void AlwaysMultipartFormData_WithParameter_ExecuteAsync()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, EchoHandler))
+            using (SimpleServer.Create(BaseUrl, EchoHandler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("?json_route=/posts")
                 {
                     AlwaysMultipartFormData = true,

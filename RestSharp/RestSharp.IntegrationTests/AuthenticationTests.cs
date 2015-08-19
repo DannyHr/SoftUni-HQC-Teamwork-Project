@@ -13,10 +13,10 @@ namespace RestSharp.IntegrationTests
     public class AuthenticationTests
     {
         [Fact]
-        public void Can_Authenticate_With_Basic_Http_Auth()
+        public void CanAuthenticateWithBasicHttpAuth()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, UsernamePasswordEchoHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, UsernamePasswordEchoHandler))
             {
                 var client = new RestClient(baseUrl)
                 {
@@ -29,16 +29,10 @@ namespace RestSharp.IntegrationTests
             }
         }
 
-        private static void UsernamePasswordEchoHandler(HttpListenerContext context)
-        {
-            var header = context.Request.Headers["Authorization"];
-            var parts = Encoding.ASCII.GetString(Convert.FromBase64String(header.Substring("Basic ".Length))).Split(':');
 
-            context.Response.OutputStream.WriteStringUtf8(string.Join("|", parts));
-        }
 
         //[Fact]
-        public void Can_Authenticate_With_OAuth()
+        public void CanAuthenticateWithOAuth()
         {
             var baseUrl = new Uri("https://api.twitter.com");
             var client = new RestClient(baseUrl);
@@ -90,6 +84,13 @@ namespace RestSharp.IntegrationTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        private static void UsernamePasswordEchoHandler(HttpListenerContext context)
+        {
+            var header = context.Request.Headers["Authorization"];
+            var parts = Encoding.ASCII.GetString(Convert.FromBase64String(header.Substring("Basic ".Length))).Split(':');
+
+            context.Response.OutputStream.WriteStringUtf8(string.Join("|", parts));
+        }
         //[Fact]
         //public void Can_Obtain_OAuth_Request_Token()
         //{

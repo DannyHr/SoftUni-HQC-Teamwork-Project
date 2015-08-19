@@ -26,15 +26,15 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Writes_Response_To_Stream()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, Handlers.FileHandler))
+            using (SimpleServer.Create(BaseUrl, Handlers.FileHandler))
             {
                 string tempFile = Path.GetTempFileName();
 
                 using (var writer = File.OpenWrite(tempFile))
                 {
-                    var client = new RestClient(baseUrl);
+                    var client = new RestClient(BaseUrl);
                     var request = new RestRequest("Assets/Koala.jpg");
 
                     request.ResponseWriter = (responseStream) => responseStream.CopyTo(writer);

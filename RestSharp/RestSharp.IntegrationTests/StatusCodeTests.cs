@@ -28,7 +28,7 @@ namespace RestSharp.IntegrationTests
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
-            using (SimpleServer.Create(baseUrl.AbsoluteUri, UrlToStatusCodeHandler))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, this.UrlToStatusCodeHandler))
             {
                 var client = new RestClient(baseUrl);
                 var request = new RestRequest("404");
@@ -41,7 +41,7 @@ namespace RestSharp.IntegrationTests
             }
         }
 
-        void UrlToStatusCodeHandler(HttpListenerContext obj)
+        private void UrlToStatusCodeHandler(HttpListenerContext obj)
         {
             obj.Response.StatusCode = int.Parse(obj.Request.Url.Segments.Last());
         }
@@ -77,7 +77,7 @@ namespace RestSharp.IntegrationTests
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
 
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.Generic<ResponseHandler>()))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.Generic<ResponseHandler>()))
             {
                 var client = new RestClient(baseUrl);
                 var request = new RestRequest("success");
@@ -101,41 +101,41 @@ namespace RestSharp.IntegrationTests
 
     public class ResponseHandler
     {
-        void error(HttpListenerContext context)
+        private void Error(HttpListenerContext context)
         {
             context.Response.StatusCode = 400;
             context.Response.Headers.Add("Content-Type", "application/xml");
             context.Response.OutputStream.WriteStringUtf8(
-@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Response>
-    <Error>
-        <Message>Not found!</Message>
-    </Error>
-</Response>");
+            @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+            <Response>
+            <Error>
+            <Message>Not found!</Message>
+            </Error>
+            </Response>");
         }
 
-        void errorwithbody(HttpListenerContext context)
+        private void Errorwithbody(HttpListenerContext context)
         {
             context.Response.StatusCode = 400;
             context.Response.Headers.Add("Content-Type", "application/xml");
             context.Response.OutputStream.WriteStringUtf8(
-@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Response>
-    <Error>
-        <Message>Not found!</Message>
-    </Error>
-</Response>");
+            @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+            <Response>
+            <Error>
+            <Message>Not found!</Message>
+            </Error>
+            </Response>");
         }
 
-        void success(HttpListenerContext context)
+        private void Success(HttpListenerContext context)
         {
             context.Response.OutputStream.WriteStringUtf8(
-@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Response>
-    <Success>
-        <Message>Works!</Message>
-    </Success>
-</Response>");
+            @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+            <Response>
+            <Success>
+            <Message>Works!</Message>
+            </Success>
+            </Response>");
         }
     }
 

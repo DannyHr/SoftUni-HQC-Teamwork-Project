@@ -362,7 +362,10 @@ using System.Windows;
 
         private void ResponseCallback(IAsyncResult result, Action<HttpResponse> callback)
         {
-            var response = new HttpResponse { ResponseStatus = ResponseStatus.None };
+            var response = new HttpResponse
+                               {
+                                   ResponseStatus = ResponseStatus.None
+                               };
 
             try
             {

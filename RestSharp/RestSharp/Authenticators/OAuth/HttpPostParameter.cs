@@ -2,6 +2,9 @@ namespace RestSharp.Authenticators.OAuth
 {
     using System.IO;
 
+    /// <summary>
+    /// 
+    /// </summary>
     internal class HttpPostParameter : WebParameter
     {
         /// <summary>

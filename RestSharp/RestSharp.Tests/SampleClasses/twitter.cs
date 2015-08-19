@@ -3,15 +3,15 @@ using RestSharp.Deserializers;
 
 namespace RestSharp.Tests.SampleClasses
 {
-    public class status
+    public class Status
     {
-        public bool truncated { get; set; }
+        public bool Truncated { get; set; }
 
-        public string created_at { get; set; }
+        public string CreatedAt { get; set; }
 
-        public string source { get; set; }
+        public string Source { get; set; }
 
-        public bool favorited { get; set; }
+        public bool Favorited { get; set; }
 
         public string in_reply_to_user_id { get; set; }
 
@@ -20,19 +20,19 @@ namespace RestSharp.Tests.SampleClasses
         public string in_reply_to_screen_name { get; set; }
 
         // ignore contributors for now
-        public user user { get; set; }
+        public User User { get; set; }
 
         // ignore geo
-        public long id { get; set; }
+        public long Id { get; set; }
 
-        public string text { get; set; }
+        public string Text { get; set; }
     }
 
-    public class user
+    public class User
     {
-        public string url { get; set; }
+        public string Url { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
 
         public string profile_text_color { get; set; }
 
@@ -87,9 +87,9 @@ namespace RestSharp.Tests.SampleClasses
         public int utc_offset { get; set; }
     }
 
-    public class StatusList : List<status> { }
+    public class StatusList : List<Status> { }
 
-    public class complexStatus
+    public class ComplexStatus
     {
         public bool truncated { get; set; }
 
@@ -115,5 +115,5 @@ namespace RestSharp.Tests.SampleClasses
         public string text { get; set; }
     }
 
-    public class StatusComplexList : List<complexStatus> { }
+    public class StatusComplexList : List<ComplexStatus> { }
 }

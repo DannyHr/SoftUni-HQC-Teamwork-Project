@@ -308,7 +308,7 @@ namespace RestSharp.Tests
             var data = File.ReadAllText(Path.Combine("SampleData", "jsonarray.txt"));
             var response = new RestResponse { Content = data };
             var json = new JsonDeserializer();
-            var output = json.Deserialize<List<status>>(response);
+            var output = json.Deserialize<List<Status>>(response);
 
             Assert.Equal(4, output.Count);
         }

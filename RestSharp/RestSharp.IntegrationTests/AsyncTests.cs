@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Net;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Threading;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class AsyncTests
     {
         [Fact]
-        public void CanPerformGetAsync()
+        public void Can_Perform_Get_Async()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
             const string Val = "Basic async test";
@@ -36,7 +38,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanPerformGetAsyncWithoutAsyncHandle()
+        public void Can_Perform_Get_Async_Without_Async_Handle()
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
             const string Val = "Basic async test";
@@ -62,7 +64,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanPerformGetTaskAsync()
+        public void Can_Perform_Get_Task_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
             const string Val = "Basic async task test";
@@ -105,7 +107,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanPerformExecuteGetTaskAsyncWithResponseType()
+        public void Can_Perform_Execute_Get_Task_Async_With_Response_Type()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -122,7 +124,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanPerformGetTaskAsyncWithResponseType()
+        public void Can_Perform_Get_Task_Async_With_Response_Type()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -139,7 +141,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanCancelGetTaskAsync()
+        public void Can_Cancel_Get_Task_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
             const string Val = "Basic async task test";
@@ -177,7 +179,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void HandlesGetRequestErrorsTaskAsync()
+        public void Handles_Get_Request_Errors_Task_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -211,7 +213,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void CanTimeoutGetTaskAsync()
+        public void Can_Timeout_Get_Task_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -295,3 +297,4 @@ namespace RestSharp.IntegrationTests
         }
     }
 }
+// done some terrible renaming of methods in order to be according to the convention :D

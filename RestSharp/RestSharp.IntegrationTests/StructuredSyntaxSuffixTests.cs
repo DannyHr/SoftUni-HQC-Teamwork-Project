@@ -1,11 +1,13 @@
-﻿using System;
-using System.Net;
-using RestSharp.Deserializers;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.Net;
+
+    using RestSharp.Deserializers;
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class StructuredSyntaxSuffixTests
     {
      
@@ -103,7 +105,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void By_default_application_json_content_type_should_deserialize_as_JSON()
+        public void By_Default_Application_Json_Content_Type_Should_Deserialize_AsJson()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
@@ -123,7 +125,7 @@ namespace RestSharp.IntegrationTests
         }
 
         [Fact]
-        public void By_default_text_xml_content_type_should_deserialize_as_XML()
+        public void By_Default_Text_Xml_Content_Type_Should_Deserialize_As_Xml()
         {
             Uri baseUrl = new Uri("http://localhost:8080/");
 
@@ -147,12 +149,6 @@ namespace RestSharp.IntegrationTests
             obj.Response.ContentType = obj.Request.QueryString["ct"];
             obj.Response.OutputStream.WriteStringUtf8(obj.Request.QueryString["c"]);
             obj.Response.StatusCode = 200;
-        }
-
-        private class Person
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
         }
     }
 }

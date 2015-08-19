@@ -1,10 +1,12 @@
-﻿using System;
-using System.IO;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.IO;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class FileTests
     {
         [Fact]

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Text;
-using RestSharp.Authenticators;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.Diagnostics;
+    using System.Net;
+    using System.Text;
+
+    using RestSharp.Authenticators;
     using RestSharp.Extensions.MonoHttp;
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
 
     public class AuthenticationTests
     {

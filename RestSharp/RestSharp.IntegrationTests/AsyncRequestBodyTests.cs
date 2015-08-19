@@ -1,29 +1,31 @@
-﻿using System.IO;
-using System.Net;
-using System.Threading;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System.IO;
+    using System.Net;
+    using System.Threading;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class AsyncRequestBodyTests
     {
-        private const string BASE_URL = "http://localhost:8888/";
+        private const string BaseUrl = "http://localhost:8888/";
 
         [Fact]
         public void Can_Not_Be_Added_To_GET_Request()
         {
             const Method HttpMethod = Method.GET;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
-                const string contentType = "text/plain";
-                const string bodyData = "abc123 foo bar baz BING!";
+                const string ContentType = "text/plain";
+                const string BodyData = "abc123 foo bar baz BING!";
 
-                request.AddParameter(contentType, bodyData, ParameterType.RequestBody);
+                request.AddParameter(ContentType, BodyData, ParameterType.RequestBody);
 
                 var resetEvent = new ManualResetEvent(false);
 
@@ -39,9 +41,9 @@ namespace RestSharp.IntegrationTests
         {
             const Method HttpMethod = Method.POST;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
@@ -61,12 +63,12 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void CanBeAddedToPutRequest()
         {
-            const Method httpMethod = Method.PUT;
+            const Method HttpMethod = Method.PUT;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
-                var request = new RestRequest(RequestBodyCapturer.Resource, httpMethod);
+                var client = new RestClient(BaseUrl);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -87,9 +89,9 @@ namespace RestSharp.IntegrationTests
         {
             const Method HttpMethod = Method.DELETE;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
@@ -111,9 +113,9 @@ namespace RestSharp.IntegrationTests
         {
             const Method HttpMethod = Method.HEAD;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
@@ -135,9 +137,9 @@ namespace RestSharp.IntegrationTests
         {
             const Method HttpMethod = Method.OPTIONS;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
@@ -159,9 +161,9 @@ namespace RestSharp.IntegrationTests
         {
             const Method HttpMethod = Method.PATCH;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestBodyCapturer>()))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";

@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Net;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class RequestBodyTests
     {
         private const string BaseUrl = "http://localhost:8888/";
@@ -12,11 +11,11 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Can_Not_Be_Added_To_GET_Request()
         {
-            const Method httpMethod = Method.GET;
+            const Method HttpMethod = Method.GET;
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, httpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -37,7 +36,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -58,7 +57,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -79,7 +78,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -100,7 +99,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -121,7 +120,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -142,7 +141,7 @@ namespace RestSharp.IntegrationTests
             using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestBodyCapturer>()))
             {
                 var client = new RestClient(BaseUrl);
-                var request = new RestRequest(RequestBodyCapturer.RESOURCE, HttpMethod);
+                var request = new RestRequest(RequestBodyCapturer.Resource, HttpMethod);
 
                 const string ContentType = "text/plain";
                 const string BodyData = "abc123 foo bar baz BING!";
@@ -168,7 +167,6 @@ namespace RestSharp.IntegrationTests
             Assert.Equal(true, RequestBodyCapturer.CapturedHasEntityBody);
             Assert.Equal(bodyData, RequestBodyCapturer.CapturedEntityBody);
         }
-
-      
     }
 }
+// done some reformatting

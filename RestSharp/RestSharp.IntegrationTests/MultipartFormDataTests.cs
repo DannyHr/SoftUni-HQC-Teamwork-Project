@@ -24,16 +24,18 @@
         [Fact]
         public void MultipartFormDataAsync()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, EchoHandler))
+            using (SimpleServer.Create(BaseUrl, EchoHandler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("/", Method.POST) { AlwaysMultipartFormData = true };
 
                 this.AddParameters(request);
 
-                client.ExecuteAsync(request, (restResponse, handle) =>
+                client.ExecuteAsync(
+                    request, 
+                    (restResponse, handle) =>
                 {
                     Console.WriteLine(restResponse.Content);
                     Assert.Equal(this.expected, restResponse.Content);
@@ -44,11 +46,11 @@
         [Fact]
         public void MultipartFormData()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, EchoHandler))
+            using (SimpleServer.Create(BaseUrl, EchoHandler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("/", Method.POST) { AlwaysMultipartFormData = true };
 
                 this.AddParameters(request);
@@ -60,13 +62,13 @@
         }
 
         [Fact]
-        public void AlwaysMultipartFormData_WithParameter_Execute()
+        public void Always_Multipart_Form_Data_With_Parameter_Execute()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, EchoHandler))
+            using (SimpleServer.Create(BaseUrl, EchoHandler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("?json_route=/posts")
                                   {
                                       AlwaysMultipartFormData = true,
@@ -80,7 +82,7 @@
         }
 
         [Fact]
-        public void AlwaysMultipartFormData_WithParameter_ExecuteTaskAsync()
+        public void Always_Multipart_Form_Data_With_Parameter_Execute_Task_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -105,7 +107,7 @@
         }
 
         [Fact]
-        public void AlwaysMultipartFormData_WithParameter_ExecuteAsync()
+        public void Always_Multipart_Form_Data_With_Parameter_Execute_Async()
         {
             const string BaseUrl = "http://localhost:8888/";
 
@@ -153,3 +155,4 @@
         }
     }
 }
+// done some renaming of methonds and props

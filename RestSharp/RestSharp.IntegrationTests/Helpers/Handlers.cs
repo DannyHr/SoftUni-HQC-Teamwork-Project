@@ -59,8 +59,8 @@ namespace RestSharp.IntegrationTests.Helpers
             return ctx =>
             {
                 var methodName = ctx.Request.Url.Segments.Last();
-                var method = typeof(T).GetMethod(methodName,
-                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+                var method = typeof(T).GetMethod(
+                    methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 
                 if (method.IsStatic)
                 {

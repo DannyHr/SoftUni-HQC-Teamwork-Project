@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace RestSharp.IntegrationTests
 {
     using System.IO;
@@ -10,7 +6,7 @@ namespace RestSharp.IntegrationTests
 
     internal class RequestBodyCapturer
     {
-        public const string RESOURCE = "Capture";
+        public const string Resource = "Capture";
 
         public static string CapturedContentType { get; set; }
 

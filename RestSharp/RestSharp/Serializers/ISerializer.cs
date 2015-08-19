@@ -21,28 +21,32 @@ namespace RestSharp.Serializers
         /// <summary>
         /// Defines which object to Serialize.
         /// </summary>
-        /// <param name="obj">Object to serialize</param>
+        /// <param name="obj">Object to serialize.</param>
         /// <returns></returns>
+        
         string Serialize(object obj);
 
        /// <summary>
         /// Gets or sets the RootElement.
        /// </summary>
+       
         string RootElement { get; set; }
 
         /// <summary>
-        /// Gets or sets the Namespace.
+        /// Gets or sets the Namespace
         /// </summary>
+        
         string Namespace { get; set; }
 
         /// <summary>
-        /// Gets or sets the DateFormat.
+        /// Gets or sets the DateFormat
         /// </summary>
         string DateFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the ContentType.
+        /// Gets or sets the ContentType
         /// </summary>
+        
         string ContentType { get; set; }
     }
 }

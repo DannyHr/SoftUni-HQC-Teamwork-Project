@@ -634,6 +634,16 @@ namespace RestSharp.Tests
             Assert.Equal(nullableDateTimeOffsetWithValue, payload.NullableDateTimeOffsetWithValue);
         }
 
+        [Fact]
+        public void Can_Set_Custom_Deserializer_Namespace() // implemented
+        {
+            const string Namespace = "http://restsharp.org";
+            var d = new XmlDeserializer();
+            d.Namespace = Namespace;
+
+            Assert.Equal(Namespace, d.Namespace);
+        }
+
         private static string CreateUnderscoresXml()
         {
             var doc = new XDocument();

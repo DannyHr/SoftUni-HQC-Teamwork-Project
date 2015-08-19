@@ -93,6 +93,7 @@
     <Compile Include="SampleClasses\GoogleWeatherWithAttributes.cs" />
     <Compile Include="SampleClasses\Payment.cs" />
     <Compile Include="SampleClasses\Struct.cs" />
+    <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="XmlAttributeDeserializerTests.cs" />
     <Compile Include="CultureChange.cs" />
     <Compile Include="JsonTests.cs" />

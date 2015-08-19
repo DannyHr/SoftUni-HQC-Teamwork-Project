@@ -481,6 +481,5 @@ namespace RestSharp.Deserializers
 
             return list;
         }
-
     }
 }

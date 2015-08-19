@@ -1,11 +1,13 @@
-﻿using System;
-using System.IO.Compression;
-using System.Net;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.IO.Compression;
+    using System.Net;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class CompressionTests
     {
         [Fact]
@@ -13,10 +15,10 @@ namespace RestSharp.IntegrationTests
         {
             Uri baseUrl = new Uri("http://localhost:8888/");
 
-            using(SimpleServer.Create(baseUrl.AbsoluteUri, GzipEchoValue("This is some gzipped content")))
+            using (SimpleServer.Create(baseUrl.AbsoluteUri, GzipEchoValue("This is some gzipped content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest("");
+                var request = new RestRequest(string.Empty);
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some gzipped content", response.Content);
@@ -31,7 +33,7 @@ namespace RestSharp.IntegrationTests
             using(SimpleServer.Create(baseUrl.AbsoluteUri, DeflateEchoValue("This is some deflated content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest("");
+                var request = new RestRequest(string.Empty);
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some deflated content", response.Content);
@@ -46,14 +48,14 @@ namespace RestSharp.IntegrationTests
             using(SimpleServer.Create(baseUrl.AbsoluteUri, Handlers.EchoValue("This is some sample content")))
             {
                 var client = new RestClient(baseUrl);
-                var request = new RestRequest("");
+                var request = new RestRequest(string.Empty);
                 var response = client.Execute(request);
 
                 Assert.Equal("This is some sample content", response.Content);
             }
         }
 
-        static Action<HttpListenerContext> GzipEchoValue(string value)
+        private static Action<HttpListenerContext> GzipEchoValue(string value)
         {
             return context =>
             {
@@ -66,7 +68,7 @@ namespace RestSharp.IntegrationTests
             };
         }
 
-        static Action<HttpListenerContext> DeflateEchoValue(string value)
+        private static Action<HttpListenerContext> DeflateEchoValue(string value)
         {
             return context =>
             {

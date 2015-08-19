@@ -1,14 +1,16 @@
-﻿using System.Collections.Specialized;
-using System.Linq;
-using System.Net;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Net;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class RequestHeadTests
     {
-        private const string BASE_URL = "http://localhost:8888/";
+        private const string BaseUrl = "http://localhost:8888/";
 
         public RequestHeadTests()
         {
@@ -18,11 +20,11 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Does_Not_Pass_Default_Credentials_When_Server_Does_Not_Negotiate()
         {
-            const Method httpMethod = Method.GET;
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>()))
+            const Method HttpMethod = Method.GET;
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>()))
             {
-                var client = new RestClient(BASE_URL);
-                var request = new RestRequest(RequestHeadCapturer.RESOURCE, httpMethod)
+                var client = new RestClient(BaseUrl);
+                var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     UseDefaultCredentials = true
                 };
@@ -41,12 +43,12 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Passes_Default_Credentials_When_UseDefaultCredentials_Is_True()
         {
-            const Method httpMethod = Method.GET;
+            const Method HttpMethod = Method.GET;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
             {
-                var client = new RestClient(BASE_URL);
-                var request = new RestRequest(RequestHeadCapturer.RESOURCE, httpMethod)
+                var client = new RestClient(BaseUrl);
+                var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     UseDefaultCredentials = true
                 };
@@ -57,7 +59,8 @@ namespace RestSharp.IntegrationTests
 
                 var keys = RequestHeadCapturer.CapturedHeaders.Keys.Cast<string>().ToArray();
 
-                Assert.True(keys.Contains("Authorization"),
+                Assert.True(
+                    keys.Contains("Authorization"),
                     "Authorization header not present in HTTP request from client, even though UseDefaultCredentials = true");
             }
         }
@@ -65,12 +68,12 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Does_Not_Pass_Default_Credentials_When_UseDefaultCredentials_Is_False()
         {
-            const Method httpMethod = Method.GET;
+            const Method HttpMethod = Method.GET;
 
-            using (SimpleServer.Create(BASE_URL, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
+            using (SimpleServer.Create(BaseUrl, Handlers.Generic<RequestHeadCapturer>(), AuthenticationSchemes.Negotiate))
             {
-                var client = new RestClient(BASE_URL);
-                var request = new RestRequest(RequestHeadCapturer.RESOURCE, httpMethod)
+                var client = new RestClient(BaseUrl);
+                var request = new RestRequest(RequestHeadCapturer.Resource, HttpMethod)
                 {
                     // UseDefaultCredentials is currently false by default, but to make the test more robust in case that ever
                     // changes, it's better to explicitly set it here.
@@ -85,7 +88,7 @@ namespace RestSharp.IntegrationTests
 
         private class RequestHeadCapturer
         {
-            public const string RESOURCE = "Capture";
+            public const string Resource = "Capture";
 
             public static NameValueCollection CapturedHeaders { get; set; }
 

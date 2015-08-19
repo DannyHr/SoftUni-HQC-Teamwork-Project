@@ -1,13 +1,23 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using RestSharp.IntegrationTests.Helpers;
-using Xunit;
-
-namespace RestSharp.IntegrationTests
+﻿namespace RestSharp.IntegrationTests
 {
+    using System;
+    using System.Net;
+    using System.Threading;
+
+    using RestSharp.IntegrationTests.Helpers;
+
+    using Xunit;
+
     public class NonProtocolExceptionHandlingTests
     {
+        /// <summary>
+        /// Simulates a long server process that should result in a client timeout
+        /// </summary>
+        /// <param name="context"></param>
+        public static void Timeout_Handler(HttpListenerContext context)
+        {
+            Thread.Sleep(101000);
+        }
         /// <summary>
         /// Success of this test is based largely on the behavior of your current DNS.
         /// For example, if you're using OpenDNS this will test will fail; ResponseStatus will be Completed.
@@ -22,11 +32,6 @@ namespace RestSharp.IntegrationTests
             Assert.Equal(ResponseStatus.Error, response.ResponseStatus);
         }
 
-        public class StupidClass
-        {
-            public string Property { get; set; }
-        }
-
         [Fact]
         public void Task_Handles_Non_Existent_Domain()
         {
@@ -37,7 +42,7 @@ namespace RestSharp.IntegrationTests
                 Method = Method.GET
             };
 
-            var task = client.ExecuteTaskAsync<StupidClass>(request);
+            var task = client.ExecuteTaskAsync<TemporaryClass>(request);
             task.Wait();
 
             var response = task.Result;
@@ -55,11 +60,11 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Handles_Server_Timeout_Error()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, TimeoutHandler))
+            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
                 var response = client.Execute(request);
 
@@ -72,20 +77,22 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Handles_Server_Timeout_Error_Async()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
             var resetEvent = new ManualResetEvent(false);
 
-            using (SimpleServer.Create(baseUrl, TimeoutHandler))
+            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
                 IRestResponse response = null;
 
-                client.ExecuteAsync(request, responseCb =>
-                                             {
-                                                 response = responseCb;
-                                                 resetEvent.Set();
-                                             });
+                client.ExecuteAsync(
+                    request, 
+                    responseCb =>
+                        {
+                            response = responseCb;
+                            resetEvent.Set();
+                        });
 
                 resetEvent.WaitOne();
 
@@ -100,11 +107,11 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Handles_Server_Timeout_Error_AsyncTask()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, TimeoutHandler))
+            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
 
                 var task =  client.ExecuteTaskAsync(request);
@@ -127,11 +134,11 @@ namespace RestSharp.IntegrationTests
         [Fact]
         public void Handles_Server_Timeout_Error_With_Deserializer()
         {
-            const string baseUrl = "http://localhost:8888/";
+            const string BaseUrl = "http://localhost:8888/";
 
-            using (SimpleServer.Create(baseUrl, TimeoutHandler))
+            using (SimpleServer.Create(BaseUrl, Timeout_Handler))
             {
-                var client = new RestClient(baseUrl);
+                var client = new RestClient(BaseUrl);
                 var request = new RestRequest("404") { Timeout = 500 };
                 var response = client.Execute<Response>(request);
 
@@ -142,13 +149,10 @@ namespace RestSharp.IntegrationTests
             }
         }
 
-        /// <summary>
-        /// Simulates a long server process that should result in a client timeout
-        /// </summary>
-        /// <param name="context"></param>
-        public static void TimeoutHandler(HttpListenerContext context)
+        public class TemporaryClass // TODO: check what is the purpose of this class
         {
-            Thread.Sleep(101000);
+            public string Property { get; set; }
         }
     }
 }
+// changed some names of the methods

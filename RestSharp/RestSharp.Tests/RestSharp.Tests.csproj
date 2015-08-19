@@ -66,6 +66,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
     </Reference>
     <Reference Include="System.Data" />
@@ -90,7 +91,9 @@
     <Compile Include="SampleClasses\EnumTest.cs" />
     <Compile Include="SampleClasses\Goodreads.cs" />
     <Compile Include="SampleClasses\GoogleWeatherWithAttributes.cs" />
+    <Compile Include="SampleClasses\Payment.cs" />
     <Compile Include="SampleClasses\Struct.cs" />
+    <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="XmlAttributeDeserializerTests.cs" />
     <Compile Include="CultureChange.cs" />
     <Compile Include="JsonTests.cs" />

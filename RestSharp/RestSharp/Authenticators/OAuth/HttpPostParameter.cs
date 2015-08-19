@@ -64,6 +64,7 @@ namespace RestSharp.Authenticators.OAuth
         /// </summary>
         /// <param name="name">The name of HttpPostParameter</param>
         /// <param name="fileName">The fileName of HttpPostParameter</param>
+        /// <param name="fileStream">The fileStream of HttpPostParameter</param>
         /// <param name="contentType">The contentType of HttpPostParameter</param>
         /// <returns>The contentType of HttpPostParameter object</returns>
         public static HttpPostParameter CreateFile(string name, string fileName, Stream fileStream, string contentType)

@@ -53,7 +53,7 @@ namespace RestSharp.Tests
             Assert.Equal("The Fonz", p.BestFriend.Name);
             Assert.Equal(1952, p.BestFriend.Since);
         }
-
+        
         [Fact]
         public void Can_Deserialize_Elements_With_Namespace_Autodetect_Namespace()
         {
@@ -266,7 +266,7 @@ namespace RestSharp.Tests
             for (int i = 0; i < 10; i++)
             {
                 friends.Add(new XElement(
-                    ns + "Friend", 
+                    ns + "Friend",
                     new XElement(ns + "Name", "Friend" + i),
                     new XElement(ns + "Since", DateTime.Now.Year - i)));
             }
@@ -275,7 +275,7 @@ namespace RestSharp.Tests
 
             root.Add(
                 new XElement(
-                    ns + "FavoriteBand", 
+                    ns + "FavoriteBand",
                     new XElement(ns + "Name", "Goldfinger")));
 
             doc.Add(root);

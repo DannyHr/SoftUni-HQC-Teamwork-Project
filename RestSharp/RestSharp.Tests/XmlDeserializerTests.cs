@@ -511,11 +511,11 @@ namespace RestSharp.Tests
             var d = new XmlDeserializer();
             var output = d.Deserialize<VenueSearch>(response);
 
-            Assert.NotEmpty(output.venues);
-            Assert.Equal(3, output.venues.Count);
-            Assert.Equal("Tivoli", output.venues[0].name);
-            Assert.Equal("http://eventful.com/brisbane/venues/tivoli-/V0-001-002169294-8", output.venues[1].url);
-            Assert.Equal("V0-001-000266914-3", output.venues[2].id);
+            Assert.NotEmpty(output.Venues);
+            Assert.Equal(3, output.Venues.Count);
+            Assert.Equal("Tivoli", output.Venues[0].name);
+            Assert.Equal("http://eventful.com/brisbane/venues/tivoli-/V0-001-002169294-8", output.Venues[1].url);
+            Assert.Equal("V0-001-000266914-3", output.Venues[2].id);
         }
 
         [Fact]
@@ -632,6 +632,16 @@ namespace RestSharp.Tests
             Assert.Null(payload.NullableDateTimeOffsetWithNull);
             Assert.True(payload.NullableDateTimeOffsetWithValue.HasValue);
             Assert.Equal(nullableDateTimeOffsetWithValue, payload.NullableDateTimeOffsetWithValue);
+        }
+
+        [Fact]
+        public void Can_Set_Custom_Deserializer_Namespace() // implemented
+        {
+            const string Namespace = "http://restsharp.org";
+            var d = new XmlDeserializer();
+            d.Namespace = Namespace;
+
+            Assert.Equal(Namespace, d.Namespace);
         }
 
         private static string CreateUnderscoresXml()

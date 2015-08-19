@@ -547,7 +547,7 @@ namespace RestSharp.Tests
         }
 
         [Fact]
-        public void Can_Deserialize_Goodreads_Xml()
+        public void CanDeserializeGoodreadsXml()
         {
             var xmlpath = PathFor("Goodreads.xml");
             var doc = XDocument.Load(xmlpath);

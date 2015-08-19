@@ -79,17 +79,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authenticators\OAuth2UriQueryParameterAuthenticator.cs" />
     <Compile Include="Authenticators\NtlmAuthenticator.cs" />
     <Compile Include="Authenticators\OAuth1Authenticator.cs" />
     <Compile Include="Authenticators\OAuth2Authenticator.cs" />
+    <Compile Include="Authenticators\OAuth2UriQueryParameterAuthenticator.cs" />
     <Compile Include="Authenticators\OAuth\Extensions\CollectionExtensions.cs" />
     <Compile Include="Authenticators\OAuth\Extensions\OAuthExtensions.cs" />
     <Compile Include="Authenticators\OAuth\Extensions\StringExtensions.cs" />
     <Compile Include="Authenticators\OAuth\Extensions\TimeExtensions.cs" />
     <Compile Include="Authenticators\OAuth\HttpPostParameter.cs" />
     <Compile Include="Authenticators\OAuth\HttpPostParameterType.cs" />
-    <Compile Include="Authenticators\OAuth2UriQueryParameterAuthenticator.cs" />
     <Compile Include="Authenticators\OAuth\OAuthParameterHandling.cs" />
     <Compile Include="Authenticators\OAuth\OAuthSignatureMethod.cs" />
     <Compile Include="Authenticators\OAuth\OAuthSignatureTreatment.cs" />

@@ -3,7 +3,7 @@ namespace RestSharp.Authenticators.OAuth
     using System.IO;
 
     /// <summary>
-    /// 
+    /// Class for HttpPostParameter needed POST method 
     /// </summary>
     internal class HttpPostParameter : WebParameter
     {

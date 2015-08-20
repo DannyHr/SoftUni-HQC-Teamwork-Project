@@ -1019,7 +1019,3 @@ using System.Web.Configuration;
         }
     }
 }
-
-// done some refactoring according to styleCop hints
-// moved the directives in the namespace
-// changed the namespace path in order to be correct

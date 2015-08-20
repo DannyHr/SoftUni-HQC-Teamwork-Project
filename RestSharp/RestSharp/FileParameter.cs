@@ -72,5 +72,3 @@
         }
     }
 }
-
-// FileParameter method moved after properies

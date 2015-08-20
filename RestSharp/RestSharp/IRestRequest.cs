@@ -285,6 +285,3 @@ namespace RestSharp
         void IncreaseNumAttempts();
     }
 }
-
-// usings placed inside namespace
-// properties moved above methods

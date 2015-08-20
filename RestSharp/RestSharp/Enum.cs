@@ -16,6 +16,8 @@
 
 namespace RestSharp
 {
+    using System;
+
     ///<summary>
     /// Types of parameters that can be added to requests
     ///</summary>
@@ -41,7 +43,7 @@ namespace RestSharp
     /// <summary>
     /// HTTP method to use when making requests
     /// </summary>
-    public enum Method 
+    public enum Method
     {
         GET,
         POST,
@@ -83,5 +85,3 @@ namespace RestSharp
         public const string RoundTrip = "u";
     }
 }
-
-// struct DateFormat moved at the bottom after enums

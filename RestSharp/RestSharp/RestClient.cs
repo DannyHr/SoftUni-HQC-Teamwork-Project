@@ -659,10 +659,3 @@ namespace RestSharp
         }
     }
 }
-
-// {} on if-blocks
-// usings moved into namespace
-// fields placed at top
-// ctors placed after fields
-// props placed agter ctors
-// public, private static, private methods placed in correct order

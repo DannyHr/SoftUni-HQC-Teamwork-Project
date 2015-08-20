@@ -42,6 +42,3 @@ namespace RestSharp.Extensions
         }
     }
 }
-
-// done some refactoring
-// please check it again

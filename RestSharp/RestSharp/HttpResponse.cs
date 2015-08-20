@@ -127,6 +127,3 @@ namespace RestSharp
         public Exception ErrorException { get; set; }
     }
 }
-
-// using moved into namespace
-// fields moved at top

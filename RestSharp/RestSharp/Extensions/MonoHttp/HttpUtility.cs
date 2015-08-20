@@ -930,5 +930,3 @@ namespace RestSharp.Extensions.MonoHttp
         #endregion // Methods
     }
 }
-
-// done some refactoring

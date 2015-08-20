@@ -520,7 +520,3 @@ namespace RestSharp
 #endif
     }
 }
-
-// added this. in front of members of the current class
-// consts renamed following PascalCase
-// methods, props, fields etc rearranged

@@ -496,8 +496,3 @@ using System.Windows;
         }
     }
 }
-
-// usings moved into the namespace
-// this. typed infront of all members of the current class
-// put {} around if-blocks
-// private static methods moved before private non-static methods.

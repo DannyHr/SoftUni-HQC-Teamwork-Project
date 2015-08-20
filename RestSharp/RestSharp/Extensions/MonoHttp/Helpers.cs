@@ -33,6 +33,3 @@ namespace RestSharp.Extensions.MonoHttp
         public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
     }
 }
-
-// done some refactoring according to styleCop hints
-// added access modifier for the class

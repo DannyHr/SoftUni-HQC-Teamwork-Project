@@ -456,6 +456,3 @@ using System.Windows.Browser;
         }
     }
 }
-
-// done some refactoring accoridng ot styleCop hints
-// please check it again
